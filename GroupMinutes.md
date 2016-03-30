@@ -12,7 +12,7 @@ Jessie
 Marc
 
 
-• Andee's idea 
+• Andee's idea //most creative
 • RPG - Similar to Knights of Pen and Paper
 • Start off as Warrior, Mage, Archer etc.
 • Battle with creatures
@@ -24,7 +24,7 @@ Marc
 • How would we grade it? 
 	○ Survival mode?
 
-Marc's Idea
+Marc's Idea	//most likely
 • Dice games are usually games of chance
 	○ Need to be in person to affect odds normally
 • Similar to craps where you can pick which number you want and earn points based on probability
@@ -33,6 +33,6 @@ Marc's Idea
 • Too similar to craps, might be able to put Andee's idea on it and spin it into a RPG
 
 
-Jessie's Idea
-• Similar to the board game RISK
+Jessie's Idea	//least likely to succeed
+• Similar to the board game RISK 
 • Separate turns between set up units and battle
