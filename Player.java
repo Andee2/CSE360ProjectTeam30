@@ -1,19 +1,22 @@
 
 public class Player {
 
-	private String name; 		//player name
-	private float currentScore; 	//total score of player
-	private float totalScore; 	//cumulative score of all games
-	private int rank; 		//player ranking
-	private int playCount;		//number of times player has played the game for stats
-	private int deathcount; 	//total times player has lost
-	private int lives;		//player lives use if we decide to track this way
+	private String name; 		//Player name
+	private float currentScore; 	//Total score of player
+	private float totalScore; 	//Cumulative score of all games
+	private int rank; 		//Player ranking
+	private int playCount;		//Number of times player has played the game for stats
+	private int deathcount; 	//Total times player has lost
+	private int lives;		//Player lives use if we decide to track this way
 	
 	public Player(){ 		//Default player constructor
 		name = "No Name";
 		currentScore = 0;
 		totalScore = 0;
 		rank = 0;
+		playCount = 0;
+		deathCount = 0;
+		lives = 0;
 	}
 	
 	public Player(String name){ 	//Player constructor with name
@@ -36,7 +39,7 @@ public class Player {
 		return rank;
 	}
 	
-	public int getplayCount(){ 	//Returns number of times player has played the game
+	public int getPlayCount(){ 	//Returns number of times player has played the game
 		return playCount;
 	}
 	
@@ -71,6 +74,5 @@ public class Player {
 	
 	public void setLives(int lives){		//Set player lives use if we decide to track this way
 		this.lives = lives;
-		
 	}
 }
