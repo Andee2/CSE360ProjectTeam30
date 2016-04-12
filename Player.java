@@ -1,5 +1,6 @@
+import java.io.Serializable;
 
-public class Player {
+public class Player implements Serializable{
 
 	private String name; 		//Player name
 	private float currentScore; 	//Total score of player
@@ -8,6 +9,7 @@ public class Player {
 	private int wins;		//Number of times player has won the game
 	private int losses; 		//Number of times player has lost the game
 	private int lives;		//Player lives use if we decide to track this way
+	private static final long serialVersionUID = 3214215555786442118L;
 	
 	public Player(){ 		//Default player constructor
 		name = "No Name";
