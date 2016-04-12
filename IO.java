@@ -1,5 +1,7 @@
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 /**
@@ -43,9 +45,25 @@ public class IO
 	 */
 	public static Player retrieve (String username)
 	{
+		Player retrieved = null;
 		
+		try
+		{
+			FileInputStream fileIn = new FileInputStream (username + ".prfl");
+			ObjectInputStream playerIn = new ObjectInputStream (fileIn);
+			
+			retrieved = playerIn.readObject ();
+		}
+		
+		catch (Exception ex)
+		{
+			ex.printStackTrace ();
+		}
+		
+		return retrieved;
 	}
 	
+/*
 	public static String profileToString (String username)
 	{
 		String result = "";
@@ -59,4 +77,5 @@ public class IO
 		
 		return result;
 	}
+*/
 }
