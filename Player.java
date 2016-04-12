@@ -64,7 +64,7 @@ public class Player {
 		this.rank = rank;
 	}
 	
-	public void setPlayCount(int wins){		//Set number of times player has won the game for stats
+	public void setWinCount(int wins){		//Set number of times player has won the game for stats
 		this.wins = wins;
 	}
 	
