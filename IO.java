@@ -35,14 +35,25 @@ public class IO
 		}
 	}
 	
-	public String profileToString (String username)
+	/**
+	 * The retrieve method takes a player username and searches for the Player profile.
+	 * 
+	 * @param username - The Player's username.
+	 * @return The Player profile that was searched for.
+	 */
+	public static Player retrieve (String username)
+	{
+		
+	}
+	
+	public static String profileToString (String username)
 	{
 		String result = "";
 		
 		return result;
 	}
 	
-	public String rankingToString ()
+	public static String rankingToString ()
 	{
 		String result = "";
 		
