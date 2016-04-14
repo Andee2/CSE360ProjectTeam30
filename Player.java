@@ -3,8 +3,8 @@ import java.io.Serializable;
 public class Player implements Serializable{
 
 	private String name; 		//Player name
-	private float currentScore; 	//Total score of player
-	private float totalScore; 	//Cumulative score of all games
+	private int currentScore; 	//Total score of player
+	private int totalScore; 	//Cumulative score of all games
 	private int rank; 		//Player ranking
 	private int wins;		//Number of times player has won the game
 	private int losses; 		//Number of times player has lost the game
@@ -29,11 +29,11 @@ public class Player implements Serializable{
 		return name;
 	}
 	
-	public float getScore(){ 	//Get player score
+	public int getScore(){ 	//Get player score
 		return currentScore;
 	}
 	
-	public float getTotalScore(){ 	//Get player score
+	public int getTotalScore(){ 	//Get player score
 		return totalScore;
 	}
 	
@@ -53,7 +53,7 @@ public class Player implements Serializable{
 		return lives;
 	}
 	
-	public void setScore(float score){ 		//Set current score which also increments total score
+	public void setScore(int score){ 		//Set current score which also increments total score
 		currentScore = currentScore + score;
 		totalScore = totalScore + currentScore;
 	}
