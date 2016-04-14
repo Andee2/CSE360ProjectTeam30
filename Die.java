@@ -19,5 +19,10 @@ public class Die
 	{
 		return rand.nextInt(6) + 1;
 	}
+	
+	public int mRoll()
+	{
+		return rand.nextInt(12) + 1;
+	}
 
 }
