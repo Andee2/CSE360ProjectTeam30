@@ -4,7 +4,49 @@ public class GameMatch
 {
 	private int playerScore;
 	private int monsterScore;
-	/** playerWins returns a boolean of true if the player won and a boolean false if the player loses
+	private int rounds;
+	private int maxRounds;
+	private int playerWins;
+	//private int winStreak;
+	
+	
+	/**GameMatch is a constructor setting up scores, rounds, and player wins*/
+	public GameMatch()
+	{
+		playerScore = 0;
+		monsterScore = 0;
+		rounds = 0;
+		maxRounds = 3;
+		playerWins = 0;
+		//winStreak = 0;
+	}
+	
+	/**********for potentially setting more than 3 rounds***********/
+	/*public GameMatch(int setRounds)
+	{
+		playerScore = 0;
+		monsterScore = 0;
+		rounds = 0;
+		maxRounds = setRounds;
+		playerWins = 0;
+		//winStreak = 0;
+	}*/
+	
+	/**nextRound increments to the next round and until it is equal to the max number of rounds
+	 * when it is the same it will trigger endMatch*/
+	public void nextRound()
+	{
+		if(rounds<maxRounds)
+		{
+			rounds++;
+		}
+		else
+		{
+			endMatch();
+		}
+	}
+	
+	/** playerWinsRound returns a boolean of true if the player won and a boolean false if the player loses
 	 * @param playerNum is the number selected by the player
 	 * monsterNum is the number selected by the monster/opponent
 	 * rolledNum is the randomly generated number from the system 
@@ -13,9 +55,10 @@ public class GameMatch
 	{
 		boolean result = false;
 		
-		if(Math.abs(playerNum-rolledNum)<Math.abs(monsterNum-rolledNum))
+		if(Math.abs(playerNum-rolledNum)<=Math.abs(monsterNum-rolledNum))
 		{
 			result = true;
+			playerWins++;
 		}
 			
 		return result;
@@ -87,9 +130,33 @@ public class GameMatch
 		}
 	}
 	/**finalPlayerScore simply returns the score of the player at the end of the match or when the player decides to quit*/
-	public int finalPlayerScore()
+	public int getFinalPlayerScore()
 	{
 		return playerScore;
 	}
-
+	
+	public int getFinalMonsterScore()
+	{
+		return monsterScore;
+	}
+	
+	/**getPlayerWins returns the number of rounds won*/
+	public int getPlayerWins()
+	{
+		return playerWins;
+	}
+	
+	
+	/**endMatch prints or returns whether or not the player has won the match */
+	public void endMatch()
+	{
+		if(playerWins>1)
+		{
+			System.out.println("The player has won the match");
+		}
+		else
+		{
+			System.out.println("The player has lost the match");
+		}
+	}
 }
