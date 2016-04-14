@@ -21,16 +21,17 @@ public class Player implements Serializable{
 	
 	/** 
 	 * Player Constructor will create a player with default values
-	 * @param name = Player name
 	 */
 	public Player(){ 		//Default player constructor
 		name = "No Name";
 		currentScore = 0;
 		totalScore = 0;
 		rank = 0;
+		wins = 0;
+		losses = 0;
+		lives = 0;
 		playCount = 0;
 		deathCount = 0;
-		lives = 0;
 	}
 	
 	/** 
