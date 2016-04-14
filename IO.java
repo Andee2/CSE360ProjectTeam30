@@ -1,8 +1,9 @@
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+
 
 /**
  * Reading and writing player profiles to and from external files.
@@ -23,8 +24,8 @@ public class IO
 	public static void write (Player toSave, String username)
 	{
 		try
-		{
-			FileOutputStream fileOut = new FileOutputStream (username + ".prfl");
+		{	
+			FileOutputStream fileOut = new FileOutputStream ("./profiles/" + username + ".prfl");
 			ObjectOutputStream playerOut = new ObjectOutputStream (fileOut);
 			
 			playerOut.writeObject (toSave);
@@ -33,6 +34,7 @@ public class IO
 		
 		catch (Exception ex)
 		{
+			System.out.println("The file could not be written. Printing the back trace:");
 			ex.printStackTrace ();
 		}
 	}
@@ -49,33 +51,18 @@ public class IO
 		
 		try
 		{
-			FileInputStream fileIn = new FileInputStream (username + ".prfl");
+			FileInputStream fileIn = new FileInputStream ("./profiles/" + username + ".prfl");
 			ObjectInputStream playerIn = new ObjectInputStream (fileIn);
 			
-			retrieved = (Player) playerIn.readObject ();
+			retrieved = playerIn.readObject ();
 		}
 		
 		catch (Exception ex)
 		{
+			System.out.println("The file could not be read. Printing the stack trace:");
 			ex.printStackTrace ();
 		}
 		
 		return retrieved;
 	}
-	
-/*
-	public static String profileToString (String username)
-	{
-		String result = "";
-		
-		return result;
-	}
-	
-	public static String rankingToString ()
-	{
-		String result = "";
-		
-		return result;
-	}
-*/
 }
