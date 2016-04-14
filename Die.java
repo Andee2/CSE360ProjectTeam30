@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class Die
 {
-	Random rand;
+	private Random rand;
 
 	public Die()
 	{

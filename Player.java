@@ -9,6 +9,8 @@ public class Player implements Serializable{
 	private int wins;		//Number of times player has won the game
 	private int losses; 		//Number of times player has lost the game
 	private int lives;		//Player lives use if we decide to track this way
+	private int playCount;
+	private int deathCount;
 	private static final long serialVersionUID = 3214215555786442118L;
 	
 	public Player(){ 		//Default player constructor

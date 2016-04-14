@@ -48,6 +48,8 @@ public class Menu extends JPanel
 	private int playerNum;
 	private String newPlayerProfile;
 	
+	private GamePlay gamePlay;
+	
 	public Menu()
 	{
 		
@@ -186,6 +188,8 @@ public class Menu extends JPanel
 				}
 				else
 				{
+					gamePlay = new GamePlay(newPlayerProfile);
+					
 					message.setText("Profile added");
 					message.setForeground(Color.green);
 					createTextField.setText("");

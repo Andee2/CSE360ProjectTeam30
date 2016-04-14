@@ -52,7 +52,7 @@ public class IO
 			FileInputStream fileIn = new FileInputStream (username + ".prfl");
 			ObjectInputStream playerIn = new ObjectInputStream (fileIn);
 			
-			retrieved = playerIn.readObject ();
+			retrieved = (Player) playerIn.readObject ();
 		}
 		
 		catch (Exception ex)
