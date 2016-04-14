@@ -3,28 +3,26 @@
  * 		Menu:
  * 			Instructions
  * 			createProfileButton 	--> a text field and a create button
- * 			createButton       		--> save whatever is in the text field to newPlayerProfile
- * 														[--> show message if the profile is added or not
- * 			chooseButton			--> lock in the player profile and set battleButton visible
- * 														[--> Option 2: pop-up another text area and choose button
- * 															 Player can put in the profile they want, return an 
- * 															 error if no match
- * 			rankButton				--> nothing yet; (idea) show the player profiles and ranking in the textArea
- *			battleButton			--> set menu visibility to false and set battle visibility to true
+ * 			createButton       	--> save whatever is in the text field to newPlayerProfile
+ * 								[--> show message if the profile is added or not
+ * 			chooseButton		--> lock in the player profile and set battleButton visible
+ * 								[--> Option 2: pop-up another text area and choose button
+ * 										Player can put in the profile they want, return an 
+ * 				   					 	error if no match
+ * 			rankButton		--> nothing yet; (idea) show the player profiles and ranking in the textArea
+ *			battleButton		--> set menu visibility to false and set battle visibility to true
  * 
  *		Battle:
  *			Instructions
- *			diceChoices				--> save the number that is currently selected to playerNum
- *			rollButton				--> need to be implemented ******** update the textArea
- *														[-->currently the only way to set backButton visible
- *			backButton				--> set menu visibility to true and set battle visibility to false
- *														[--> UPDATE information. Show when game finish
- *			giveUpButton			--> set menu visibility to false and set battle visibility to true
- *														[--> don't update or add a lost
+ *			diceChoices		--> save the number that is currently selected to playerNum
+ *			rollButton		--> need to be implemented ******** update the textArea
+ *								[-->currently the only way to set backButton visible
+ *			backButton		--> set menu visibility to true and set battle visibility to false
+ *								[--> UPDATE information. Show when game finish
+ *			giveUpButton		--> set menu visibility to false and set battle visibility to true
+ *								[--> don't update or add a lost
  *
- *		ListOfPlayer:					a text field that show A list of Profile or ranking
- *
- *
+ *		ListOfPlayer:			a text field that show A list of Profile or ranking
  *
  *	The JLabel message and the JPanel createProfilePanel will be reset to "" and not visible, respectively,
  *	whenever a button in the Menu panel is selected.
@@ -39,7 +37,8 @@ public class Menu extends JPanel
 {	
 	//A Lot of private variable instantiated
 	private JLabel menuLabel, menuInstruction1, menuInstruction2, battleInstruction1, battleInstruction2, battleLabel, message;
-	private JButton backButton, giveUpButton, rankButton, createButton, chooseButton, battleButton, createProfileButton, rollButton, empty, empty2, empty3, empty4;
+	private JButton backButton, giveUpButton, rankButton, createButton, chooseButton, battleButton, 
+		createProfileButton, rollButton, empty, empty2, empty3, empty4;
 	private JPanel menuOption, battleOption, createProfilePanel, cutTopHalf, battlePanel, battleInstruction, quitPanel;
 	private JTextField createTextField;
 	private TextArea listOfPlayer;
@@ -77,7 +76,7 @@ public class Menu extends JPanel
 		//Buttons in the menu
 		rankButton = new JButton("ranking");
 		createButton = new JButton("Create Profile");
-		chooseButton = new JButton("Choose Profile");	//Will not be visible until the a profile is choose;
+		chooseButton = new JButton("Choose Profile");		//Will not be visible until the a profile is choose;
 		battleButton = new JButton("Start Fight");		//Will not be visible until a profile is choose
 		createTextField = new JTextField();
 		createProfileButton = new JButton("Create");
@@ -88,7 +87,7 @@ public class Menu extends JPanel
 		giveUpButton = new JButton("Give Up");
 		diceChoices = new JComboBox<String>(dice);
 		
-		backButton.setVisible(false);					//This button will Not be shown until the "game" end
+		backButton.setVisible(false);			//This button will Not be shown until the "game" end
 		
 		//Text Area for different purposes
 		listOfPlayer = new TextArea("testing");
@@ -99,7 +98,7 @@ public class Menu extends JPanel
 		createProfilePanel.add(createTextField);
 		createProfilePanel.add(createProfileButton);
 		
-		createProfilePanel.setVisible(false);			//This will show when the player click the the player click recreate 
+		createProfilePanel.setVisible(false);		//This will show when the player click the the player click recreate 
 		
 		
 /*===================================[BUTTON LISTENER]=================================*/
@@ -178,7 +177,8 @@ public class Menu extends JPanel
 			{
 				//Implement the "create a new profile" here
 				
-				newPlayerProfile = createTextField.getText();			//save whatever in the text field too newPlayerProfile and reset text field
+				//save whatever in the text field too newPlayerProfile and reset text field
+				newPlayerProfile = createTextField.getText();	
 				if (newPlayerProfile.isEmpty())
 				{
 					message.setText("Please fill in the create profile!");
@@ -204,7 +204,7 @@ public class Menu extends JPanel
 				createProfilePanel.setVisible(false);
 				//Implement the "show the ranking" here
 			}
-			if (action == battleButton)									//set Visibility to Menu panel and Battle panel
+			if (action == battleButton)				//set Visibility to Menu panel and Battle panel
 			{
 				message.setText("");
 				createProfilePanel.setVisible(false);
@@ -216,7 +216,7 @@ public class Menu extends JPanel
 				message.setText("");
 				createProfilePanel.setVisible(true);
 			}
-			if (action == backButton)									//set Visibility to Menu panel and Battle panel
+			if (action == backButton)				//set Visibility to Menu panel and Battle panel
 			{
 				menuOption.setVisible(true);
 				battleOption.setVisible(false);
@@ -227,7 +227,7 @@ public class Menu extends JPanel
 				backButton.setVisible(true);
 				//Implementation
 			}
-			if	(action == giveUpButton)								//set Visibility to Menu panel and Battle panel
+			if	(action == giveUpButton)			//set Visibility to Menu panel and Battle panel
 			{
 				menuOption.setVisible(true);
 				battleOption.setVisible(false);
