@@ -193,7 +193,7 @@ public class Player implements Serializable{
 	
 	/**
 	 * incrementLossCount will add to the current Player's loss count
-	 * @param wins = amount to add to current Player's losses
+	 * @param losses = amount to add to current Player's losses
 	 */
 	public void incrementLossCount(int losses){		//increment number of times player has loss the game for stats
 		this.losses = this.losses + losses;

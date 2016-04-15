@@ -132,7 +132,8 @@ public class Menu extends JPanel
 		rollButton.addActionListener(new ButtonListener());
 		backButton.addActionListener(new ButtonListener());
 		giveUpButton.addActionListener(new ButtonListener());
-		 
+		
+		diceChoices.addActionListener(new ComboListener());
 		
 /*================================[PANEL SET-UP]=========================================*/
 		menuOption = new JPanel();
@@ -217,8 +218,10 @@ public class Menu extends JPanel
 						} else {
 						
 							IO.write(newPlayer, newPlayerProfile);
-							currentPlayer = newPlayer;
-					
+							currentPlayer = newPlayer; //global player
+							
+							gamePlay = new GamePlay(currentPlayer); //Creates the new Player's profile and starts system for game
+							
 							message.setText("Profile added");
 							message.setForeground(Color.green);
 							createTextField.setText("");
@@ -264,7 +267,7 @@ public class Menu extends JPanel
 					{
 						//Player loadPlayer = new Player(newPlayerProfile);
 						currentPlayer = IO.retrieve(loadProfile);
-				
+						gamePlay = new GamePlay(currentPlayer); //Creates the new Player's profile and starts system for game
 						message.setText("Profile loaded");
 						message.setForeground(Color.green);
 						createTextField.setText("");
@@ -309,10 +312,19 @@ public class Menu extends JPanel
 			}
 			if (action == battleButton)				//set Visibility to Menu panel and Battle panel
 			{
-				message.setText("");
-				createProfilePanel.setVisible(false);
-				menuOption.setVisible(false);
-				battleOption.setVisible(true);
+				if(gamePlay == null)
+					{
+					listOfPlayer.setText("A profile has not been created or selected to play the game with.");
+					}
+					else
+					{
+					message.setText("");
+					createProfilePanel.setVisible(false);
+					menuOption.setVisible(false);
+					battleOption.setVisible(true);
+					
+					listOfPlayer.setText("Beginning Round 1 of 3\n\n");
+					}
 			}
 			if (action == createButton)								
 			{
@@ -328,8 +340,26 @@ public class Menu extends JPanel
 			}
 			if	(action == rollButton)
 			{
-				backButton.setVisible(true);
-				//Implementation
+				try {
+					
+					String gameDetails = gamePlay.rollDice(playerNum); //Locks in player's guess and begins calculating a winner
+
+					listOfPlayer.append(gameDetails);
+				
+					backButton.setVisible(true);
+					
+					//IO.write(currentPlayer, newPlayerProfile);
+					
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NullPointerException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			if	(action == giveUpButton)			//set Visibility to Menu panel and Battle panel
 			{

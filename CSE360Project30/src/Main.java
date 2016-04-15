@@ -1,4 +1,7 @@
 import java.awt.Container;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.StreamCorruptedException;
 
 import javax.swing.JApplet;
 
@@ -14,6 +17,8 @@ public class Main extends JApplet
 		Container cont = getContentPane();
 		cont.add(newMenu);
 		setSize(650,650);
+		
 	}
+	
 
 }
