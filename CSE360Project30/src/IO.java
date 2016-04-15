@@ -1,8 +1,4 @@
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
+import java.io.*;
 
 /**
  * Reading and writing player profiles to and from external files.
@@ -20,21 +16,52 @@ public class IO
 	 * @param toSave - The Player profile that needs to be saved.
 	 * @param username - The username to archive the profile as.
 	 */
-	public static void write (Player toSave, String username)
+	public static int write (Player toSave, String username) 
+			throws FileNotFoundException, IOException, NullPointerException
 	{
+		int error;
+		
 		try
-		{
-			FileOutputStream fileOut = new FileOutputStream (username + ".prfl");
+		{	
+			FileOutputStream fileOut = new FileOutputStream ("../profiles/" + username + ".prfl");
 			ObjectOutputStream playerOut = new ObjectOutputStream (fileOut);
 			
 			playerOut.writeObject (toSave);
 			playerOut.close ();
+			
+			error = 0;
+		}
+		
+		catch (FileNotFoundException ex)
+		{
+			error = 1;
+			System.out.println("The file name may be the name of a directory, or you cannot save to the file. "
+					+ "Make sure you have the permissions to access the file, or that it is not a directory.");
+			ex.printStackTrace(System.out);
+		}
+		
+		catch (IOException ex)
+		{
+			error = 2;
+			System.out.println("There was an error writing to the File Output Stream.");
+			ex.printStackTrace(System.out);
+		}
+		
+		catch (NullPointerException ex)
+		{
+			error = 3;
+			System.out.println("The FileOutputStream is null. Contact the distributors.");
+			ex.printStackTrace(System.out);
 		}
 		
 		catch (Exception ex)
 		{
-			ex.printStackTrace ();
+			error = 4;
+			System.out.println("There was an error.");
+			ex.printStackTrace(System.out);
 		}
+		
+		return error;
 	}
 	
 	/**
@@ -43,39 +70,51 @@ public class IO
 	 * @param username - The Player's username.
 	 * @return The Player profile that was searched for.
 	 */
-	public static Player retrieve (String username)
+	public static Player retrieve (String username) 
+			throws FileNotFoundException, StreamCorruptedException, IOException, NullPointerException
 	{
 		Player retrieved = null;
 		
 		try
 		{
-			FileInputStream fileIn = new FileInputStream (username + ".prfl");
+			FileInputStream fileIn = new FileInputStream ("../profiles/" + username + ".prfl");
 			ObjectInputStream playerIn = new ObjectInputStream (fileIn);
 			
 			retrieved = (Player) playerIn.readObject ();
+			playerIn.close ();
+		}
+		
+		catch (FileNotFoundException ex)
+		{
+			System.out.println("The file does not exist, or cannot be opened. "
+					+ "Check to see if you're using the correct spelling and case, or if the file exists.");
+			ex.printStackTrace(System.out);
+		}
+		
+		catch (StreamCorruptedException ex)
+		{
+			System.out.println("The filename is incorrect, or the file is corrupted.");
+			ex.printStackTrace(System.out);
+		}
+		
+		catch (IOException ex)
+		{
+			System.out.println("There was an error reading from the File Input Stream.");
+			ex.printStackTrace(System.out);
+		}
+		
+		catch (NullPointerException ex)
+		{
+			System.out.println("The FileInputStream is null. Contact the distributors.");
+			ex.printStackTrace(System.out);
 		}
 		
 		catch (Exception ex)
 		{
-			ex.printStackTrace ();
+			System.out.println("There was an error.");
+			ex.printStackTrace(System.out);
 		}
 		
 		return retrieved;
 	}
-	
-/*
-	public static String profileToString (String username)
-	{
-		String result = "";
-		
-		return result;
-	}
-	
-	public static String rankingToString ()
-	{
-		String result = "";
-		
-		return result;
-	}
-*/
 }

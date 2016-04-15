@@ -27,7 +27,9 @@
  *	The JLabel message and the JPanel createProfilePanel will be reset to "" and not visible, respectively,
  *	whenever a button in the Menu panel is selected.
  */
-
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.StreamCorruptedException;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -189,7 +191,8 @@ public class Menu extends JPanel
 	
 	private class ButtonListener implements ActionListener
 	{
-		public void actionPerformed(ActionEvent event) {
+		public void actionPerformed(ActionEvent event)
+		{
 			Object action = event.getSource();		
 			if (action == createProfileButton)
 			{
@@ -206,15 +209,42 @@ public class Menu extends JPanel
 				else
 				{
 					//gamePlay = new GamePlay(newPlayerProfile);
+					try {
+						Player newPlayer = new Player(newPlayerProfile);
+							if(IO.retrieve(newPlayerProfile) != null){
+								message.setText("Check if profile already exists!");
+								message.setForeground(Color.red);
+						} else {
+						
+							IO.write(newPlayer, newPlayerProfile);
+							currentPlayer = newPlayer;
 					
-					Player newPlayer = new Player(newPlayerProfile);
-					IO.write(newPlayer, newPlayerProfile);
-					currentPlayer = newPlayer;
+							message.setText("Profile added");
+							message.setForeground(Color.green);
+							createTextField.setText("");
+							createProfilePanel.setVisible(false);
+						}
+						
+						
+					}
+					catch (FileNotFoundException ex)
+					{
+						System.out.println("The file does not exist, or cannot be opened. "
+								+ "Check to see if you're using the correct spelling and case, or if the file exists.");
+						ex.printStackTrace(System.out);
+					}
 					
-					message.setText("Profile added");
-					message.setForeground(Color.green);
-					createTextField.setText("");
-					createProfilePanel.setVisible(false);
+					catch (StreamCorruptedException ex)
+					{
+						System.out.println("The filename is incorrect, or the file is corrupted.");
+						ex.printStackTrace(System.out);
+					}
+					
+					catch (IOException ex)
+					{
+						System.out.println("There was an error reading from the File Input Stream.");
+						ex.printStackTrace(System.out);
+					}
 					
 				}
 			}	
@@ -224,24 +254,43 @@ public class Menu extends JPanel
 				String loadProfile;
 				
 				loadProfile = createTextField2.getText();
+				try {
+					if (loadProfile.isEmpty())
+					{
+						message.setText("Please fill in the load profile!");
+						message.setForeground(Color.red);
+					}
+					else if(IO.retrieve(loadProfile) != null) //----FIX THIS---- error if profile not found
+					{
+						//Player loadPlayer = new Player(newPlayerProfile);
+						currentPlayer = IO.retrieve(loadProfile);
 				
-				if (loadProfile.isEmpty())
-				{
-					message.setText("Please fill in the load profile!");
-					message.setForeground(Color.red);
+						message.setText("Profile loaded");
+						message.setForeground(Color.green);
+						createTextField.setText("");
+						loadProfilePanel.setVisible(false);
+					} else {
+						message.setText("Profile not found");
+						message.setForeground(Color.red);
+					}
 				}
-				else if(IO.retrieve(loadProfile) != null) //----FIX THIS---- error if profile not found
+				catch (FileNotFoundException ex)
 				{
-				//Player loadPlayer = new Player(newPlayerProfile);
-				currentPlayer = IO.retrieve(loadProfile);
+					System.out.println("The file does not exist, or cannot be opened. "
+							+ "Check to see if you're using the correct spelling and case, or if the file exists.");
+					ex.printStackTrace(System.out);
+				}
 				
-				message.setText("Profile loaded");
-				message.setForeground(Color.green);
-				createTextField.setText("");
-				loadProfilePanel.setVisible(false);
-				} else {
-					message.setText("Profile not found");
-					message.setForeground(Color.red);
+				catch (StreamCorruptedException ex)
+				{
+					System.out.println("The filename is incorrect, or the file is corrupted.");
+					ex.printStackTrace(System.out);
+				}
+				
+				catch (IOException ex)
+				{
+					System.out.println("There was an error reading from the File Input Stream.");
+					ex.printStackTrace(System.out);
 				}
 				//Implement the "choose the player" here
 			}
