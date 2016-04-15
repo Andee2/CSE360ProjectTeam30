@@ -40,6 +40,14 @@ public class Player implements Serializable{
 	 */
 	public Player(String name){ 	//Player constructor with name
 		this.name = name;
+		currentScore = 0;
+		totalScore = 0;
+		rank = 0;
+		wins = 0;
+		losses = 0;
+		lives = 0;
+		playCount = 0;
+		deathCount = 0;
 	}
 	
 	/**
