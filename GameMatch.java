@@ -1,6 +1,6 @@
 //package cse360GroupPrj;
 
-public class GameMatch 
+public class GameMatch
 {
 	private int playerScore;
 	private int monsterScore;
@@ -8,8 +8,8 @@ public class GameMatch
 	private int maxRounds;
 	private int playerWins;
 	//private int winStreak;
-	
-	
+
+
 	/**GameMatch is a constructor setting up scores, rounds, and player wins*/
 	public GameMatch()
 	{
@@ -20,7 +20,7 @@ public class GameMatch
 		playerWins = 0;
 		//winStreak = 0;
 	}
-	
+
 	/**********for potentially setting more than 3 rounds***********/
 	/*public GameMatch(int setRounds)
 	{
@@ -31,40 +31,44 @@ public class GameMatch
 		playerWins = 0;
 		//winStreak = 0;
 	}*/
-	
+
 	/**nextRound increments to the next round and until it is equal to the max number of rounds
 	 * when it is the same it will trigger endMatch*/
-	public void nextRound()
+	public boolean nextRound()
 	{
-		if(rounds<maxRounds)
+		boolean nextRound;
+		if(rounds < maxRounds && playerWins <= maxRounds / 2)
 		{
+			nextRound = true;
 			rounds++;
 		}
 		else
 		{
+			nextRound = false;
 			endMatch();
 		}
+		return nextRound;
 	}
-	
+
 	/** playerWinsRound returns a boolean of true if the player won and a boolean false if the player loses
 	 * @param playerNum is the number selected by the player
 	 * monsterNum is the number selected by the monster/opponent
-	 * rolledNum is the randomly generated number from the system 
+	 * rolledNum is the randomly generated number from the system
 	 * */
 	public boolean playerWinsRound(int playerNum, int monsterNum, int rolledNum)
 	{
 		boolean result = false;
-		
+
 		if(Math.abs(playerNum-rolledNum)<=Math.abs(monsterNum-rolledNum))
 		{
 			result = true;
 			playerWins++;
 		}
-			
+
 		return result;
 	}
-	
-	/** updateScore will update the score of the winner of the round and give a higher score based 
+
+	/** updateScore will update the score of the winner of the round and give a higher score based
 	 * on the probability of that number being rolled in the first place
 	 * @param playerWin is a boolean to indicate who gets the points for the round
 	 * winningNum is the number chosen by the winner during the round
@@ -134,19 +138,24 @@ public class GameMatch
 	{
 		return playerScore;
 	}
-	
+
 	public int getFinalMonsterScore()
 	{
 		return monsterScore;
 	}
-	
+
 	/**getPlayerWins returns the number of rounds won*/
 	public int getPlayerWins()
 	{
 		return playerWins;
 	}
-	
-	
+
+	public int getRounds()
+	{
+		return rounds;
+	}
+
+
 	/**endMatch prints or returns whether or not the player has won the match */
 	public void endMatch()
 	{
@@ -158,5 +167,6 @@ public class GameMatch
 		{
 			System.out.println("The player has lost the match");
 		}
+
 	}
 }
