@@ -40,6 +40,14 @@ public class Player implements Serializable{
 	 */
 	public Player(String name){ 	//Player constructor with name
 		this.name = name;
+		currentScore = 0;
+		totalScore = 0;
+		rank = 0;
+		wins = 0;
+		losses = 0;
+		lives = 0;
+		playCount = 0;
+		deathCount = 0;
 	}
 	
 	/**
@@ -97,6 +105,22 @@ public class Player implements Serializable{
 	 */
 	public int getLives(){ 		//Get player's number of lives left
 		return lives;
+	}
+	
+	/**
+	 * getPlayCount will return total number of times Player has Played game
+	 * @return = number times player has played the game
+	 */
+	public int getPlayCount(){
+		return playCount;
+	}
+	
+	/**
+	 * getDeathCount will return total number of deaths player has
+	 * @return = number of deaths for Player
+	 */
+	public int getDeathCount(){
+		return deathCount;
 	}
 	
 	/**
@@ -171,7 +195,7 @@ public class Player implements Serializable{
 	 * incrementLossCount will add to the current Player's loss count
 	 * @param wins = amount to add to current Player's losses
 	 */
-	public void incrementLossCount(int wins){		//increment number of times player has loss the game for stats
+	public void incrementLossCount(int losses){		//increment number of times player has loss the game for stats
 		this.losses = this.losses + losses;
 	}
 	
