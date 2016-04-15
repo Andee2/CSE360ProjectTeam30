@@ -21,7 +21,7 @@ public class DieTest {
 	public void testMRoll() {
 		Die dice = new Die();
 		int mynum = dice.mRoll();
-		assertTrue(1 <= mynum && mynum <= 12);
+		assertTrue(2 <= mynum && mynum <= 12);
 	}
 
 }
