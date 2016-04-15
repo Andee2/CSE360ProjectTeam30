@@ -1,3 +1,9 @@
+/**
+ * This class is to act as the central command module between the other classes in this project
+ * @author Andrew Leach
+ *
+ */
+
 
 public class GamePlay
 {
@@ -8,6 +14,9 @@ public class GamePlay
 	//private int playerRoll;
 	private boolean matchEnded;
 
+	/**
+	 * Default constructor for GamePlay.class
+	 */
 	public GamePlay()
 	{
 		activePlayer = new Player();
@@ -16,6 +25,11 @@ public class GamePlay
 		matchEnded = false;
 	}
 
+	/**
+	 * Preferred Constructor for GamePlay.class
+	 * Takes in the player's name and creates a player object with it
+	 * @param name
+	 */
 	public GamePlay(String name)
 	{
 		activePlayer = new Player(name);
@@ -24,6 +38,14 @@ public class GamePlay
 		matchEnded = false;
 	}
 
+	/**
+	 * Performs the actions of a single round of gameplay
+	 * and returns a String with the details of the round.
+	 * @param playerNumber
+	 * @return A String containing the number guessed by the player,
+	 * the number guessed by the monster, both dice values and their sum,
+	 * the outcome of the round, and the outcome of the match.
+	 */
 	public String rollDice(int playerNumber)
 	{
 		String feedback;
@@ -41,6 +63,7 @@ public class GamePlay
 				+ "The correct guess is %d.\n",
 				playerNumber, monsterRoll, firstRoll, secRoll, sumRoll);
 
+		//Determine who won and update scores
 		boolean playerWin = currentGame.playerWinsRound(playerNumber, monsterRoll, sumRoll);
 		currentGame.updateScore(playerWin, sumRoll);
 
@@ -63,11 +86,18 @@ public class GamePlay
 	}
 	*/
 
+	/**
+	 * Determines if there is another round to the match.
+	 * If the match is determined to be over, then this method
+	 * resolves who won the match and returns the details as a string.
+	 * This method also initiates the saving of the player's information.
+	 * @return String containing the next rounds count or the results of the match
+	 */
 	private String nextRound()
 	{
-		String result = "";
-		boolean cont = currentGame.nextRound();
-		if (!cont)
+		String result;
+		boolean continueGame = currentGame.nextRound();
+		if (!continueGame)
 		{
 			int roundsWin = currentGame.getPlayerWins();
 			matchEnded = true;
