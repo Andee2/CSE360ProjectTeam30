@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class ProfileCheckTest {
 
-	@Test
+	@Test //check if able to load file from .prfl
 	public void loadFileCheck() throws StreamCorruptedException, FileNotFoundException, NullPointerException, IOException {
 		
 		System.out.println("Please enter player name to search for");
@@ -23,13 +23,15 @@ public class ProfileCheckTest {
 		
 		currentPlayer = IO.retrieve(inputName);
 		
-		//assertNotEquals(0,currentPlayer.getWinCount());
+		assertNotEquals(0,currentPlayer.getWinCount());
 		assertNotEquals(0,currentPlayer.getLossCount());
 		//assertNotEquals(0,currentPlayer.getScore());
 		//assertNotEquals(0,currentPlayer.getTotalScore());
 		//assertNotEquals(0,currentPlayer.getPlayCount());
 	}
 	
+	//check if able to write to .prfl
+	@Test
 	public void writeFileCheck() throws StreamCorruptedException, FileNotFoundException, NullPointerException, IOException {
 		
 		System.out.println("Please enter player name to search for");
@@ -46,7 +48,7 @@ public class ProfileCheckTest {
 		IO.write(currentPlayer, inputName);
 		
 		assertEquals(5,currentPlayer.getRank());
-		//assertNotEquals(0,currentPlayer.getLossCount());
+		assertNotEquals(0,currentPlayer.getLossCount());
 		//assertNotEquals(0,currentPlayer.getScore());
 		//assertNotEquals(0,currentPlayer.getTotalScore());
 		//assertNotEquals(0,currentPlayer.getPlayCount());

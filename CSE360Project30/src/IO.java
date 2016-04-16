@@ -26,7 +26,7 @@ public class IO
 			
 			String path = System.getProperty("user.dir");
 			path = path.replaceAll("bin", "");
-			System.out.println(path);
+			//System.out.println(path);
 			
 			
 			FileOutputStream fileOut = new FileOutputStream (path + "/profiles/" + username + ".prfl");
@@ -85,7 +85,7 @@ public class IO
 		{
 			String path = System.getProperty("user.dir");
 			path = path.replaceAll("bin", "");
-			System.out.println(path);
+			//System.out.println(path);
 			
 			FileInputStream fileIn = new FileInputStream (path + "/profiles/" + username + ".prfl");
 			ObjectInputStream playerIn = new ObjectInputStream (fileIn);
