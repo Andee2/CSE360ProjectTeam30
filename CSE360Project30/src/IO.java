@@ -23,7 +23,13 @@ public class IO
 		
 		try
 		{	
-			FileOutputStream fileOut = new FileOutputStream ("../profiles/" + username + ".prfl");
+			
+			String path = System.getProperty("user.dir");
+			path = path.replaceAll("bin", "");
+			System.out.println(path);
+			
+			
+			FileOutputStream fileOut = new FileOutputStream (path + "/profiles/" + username + ".prfl");
 			ObjectOutputStream playerOut = new ObjectOutputStream (fileOut);
 			
 			playerOut.writeObject (toSave);
@@ -77,7 +83,11 @@ public class IO
 		
 		try
 		{
-			FileInputStream fileIn = new FileInputStream ("../profiles/" + username + ".prfl");
+			String path = System.getProperty("user.dir");
+			path = path.replaceAll("bin", "");
+			System.out.println(path);
+			
+			FileInputStream fileIn = new FileInputStream (path + "/profiles/" + username + ".prfl");
 			ObjectInputStream playerIn = new ObjectInputStream (fileIn);
 			
 			retrieved = (Player) playerIn.readObject ();

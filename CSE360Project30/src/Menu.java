@@ -265,6 +265,7 @@ public class Menu extends JPanel
 					}
 					else if(IO.retrieve(loadProfile) != null) //----FIX THIS---- error if profile not found
 					{
+						
 						//Player loadPlayer = new Player(newPlayerProfile);
 						currentPlayer = IO.retrieve(loadProfile);
 						gamePlay = new GamePlay(currentPlayer); //Creates the new Player's profile and starts system for game
