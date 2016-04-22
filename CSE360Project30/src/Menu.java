@@ -209,7 +209,6 @@ public class Menu extends JPanel
 				}
 				else
 				{
-					//gamePlay = new GamePlay(newPlayerProfile);
 					try {
 						Player newPlayer = new Player(newPlayerProfile);
 							if(IO.retrieve(newPlayerProfile) != null){
@@ -220,7 +219,9 @@ public class Menu extends JPanel
 							IO.write(newPlayer, newPlayerProfile);
 							currentPlayer = newPlayer; //global player
 							
-							gamePlay = new GamePlay(currentPlayer); //Creates the new Player's profile and starts system for game
+							//Creates the new Player's profile and starts system for game
+							gamePlay = new GamePlay(currentPlayer); 
+							
 							
 							message.setText("Profile added");
 							message.setForeground(Color.green);
@@ -263,12 +264,11 @@ public class Menu extends JPanel
 						message.setText("Please fill in the load profile!");
 						message.setForeground(Color.red);
 					}
-					else if(IO.retrieve(loadProfile) != null) //----FIX THIS---- error if profile not found
+					else if(IO.retrieve(loadProfile) != null) //
 					{
-						
-						//Player loadPlayer = new Player(newPlayerProfile);
+						//loads the Player's profile and starts system for game
 						currentPlayer = IO.retrieve(loadProfile);
-						gamePlay = new GamePlay(currentPlayer); //Creates the new Player's profile and starts system for game
+						gamePlay = new GamePlay(currentPlayer); 
 						message.setText("Profile loaded");
 						message.setForeground(Color.green);
 						createTextField.setText("");
