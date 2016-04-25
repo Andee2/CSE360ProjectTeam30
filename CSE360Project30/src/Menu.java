@@ -51,7 +51,7 @@ public class Menu extends JPanel
 	private int playerNum;
 	private String newPlayerProfile;
 
-	private Player currentPlayer = new Player();
+	private Player currentPlayer;
 
 	private GamePlay gamePlay;
 
@@ -311,6 +311,16 @@ public class Menu extends JPanel
 				message.setText("");
 				createProfilePanel.setVisible(false);
 				//Implement the "show the ranking" here
+				
+				if(currentPlayer == null){
+					String ranking = "";
+					listOfPlayer.setText("No Player Selected");
+				} else {
+				//test code for displaying rank/stats
+				String ranking = "";
+				listOfPlayer.setText(currentPlayer.getName() + "\n" + "Player score: " + ranking + currentPlayer.getTotalScore());
+				}
+				
 			}
 			if (action == battleButton)				//set Visibility to Menu panel and Battle panel
 			{

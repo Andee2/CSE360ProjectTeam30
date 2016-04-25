@@ -49,10 +49,14 @@ public class GamePlay
 		if(playerWin)
 		{
 			feedback = feedback + "You have won this round!\n";
+			//probably need to edit if gamematch score is incremental and not singular
+			//gameplay is not working properly as well so need to edit later when it is fixed - mkchun
+			activePlayer.incrementScore(currentGame.getFinalPlayerScore());
 		}
 		else
 		{
 			feedback = feedback + "You have lost this round!\n";
+			//no points for loss
 		}
 
 		feedback = feedback + nextRound();
