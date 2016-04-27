@@ -48,7 +48,7 @@ public class Menu extends JPanel
 	private JComboBox<String> diceChoices;
 
 	private String[] dice = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};
-	private int playerNum;
+	private int playerNum = 2;
 	private String newPlayerProfile;
 
 	private Player currentPlayer;
@@ -81,7 +81,7 @@ public class Menu extends JPanel
 		empty4.setVisible(false);
 
 		//Buttons in the menu
-		rankButton = new JButton("ranking");
+		rankButton = new JButton("Ranking");
 		createButton = new JButton("Create Profile");
 		chooseButton = new JButton("Choose Profile");		//Will not be visible until the a profile is choose;
 		battleButton = new JButton("Start Fight");		//Will not be visible until a profile is choose
@@ -412,6 +412,7 @@ public class Menu extends JPanel
 				playerNum = 11;
 			else if (diceChoices.getSelectedItem().equals("12"))
 				playerNum = 12;
+			else;
 		}
 	}
 }

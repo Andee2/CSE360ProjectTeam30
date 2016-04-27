@@ -26,6 +26,17 @@ public class GamePlay
 		matchEnded = false;
 	}
 
+	/**
+	 * rollDice simulates a round in the game. This includes picking the number to match, picking the opponent's number,
+	 * comparing the player's guess and opponent's guess to the number to match, decides the winner and updates scores
+	 * 
+	 * @calls Die.roll(), Die.mroll(), GameMatch.playerWinsRound(int, int, int), GameMatch.updateScore(boolean, int)
+	 * @param playerNumber
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws NullPointerException
+	 * @throws IOException
+	 */
 	public String rollDice(int playerNumber) throws FileNotFoundException, NullPointerException, IOException
 	{
 		String feedback;
@@ -63,6 +74,7 @@ public class GamePlay
 		return feedback;
 	}
 
+	//No longer needed
 	/*public void setPlayerRoll (int number)
 	{
 		playerRoll = number;
