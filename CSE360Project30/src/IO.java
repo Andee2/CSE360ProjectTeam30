@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.LinkedList;
 
 /**
  * Reading and writing player profiles to and from external files.
@@ -128,47 +129,43 @@ public class IO
 	/**
 	 * This allows to open the manifest file to read from it.
 	 * 
-	 * @return 
+	 * @return The LinkedList of that was stored from the manifest
 	 * @throws FileNotFoundException
 	 * @throws NullPointerException
 	 */
-	public static int readFromManifest (Player changed) 
+	public static LinkedList<Player> readFromManifest () 
 			throws FileNotFoundException, NullPointerException
 	{
-		int error;
+		BufferedReader reader = null;
+		LinkedList<Player> list = null;
 		
 		try
 		{
-			FileInputStream fileIn = new FileInputStream ("manif.est");
-
-			error = 0;
+			String currentLine = null;
+			reader = new BufferedReader (new FileReader ("manifest.list"));
+			
+			currentLine = reader.readLine();
 		}
 		
 		catch (FileNotFoundException ex)
 		{
 			System.out.println("The manifest cannot be read. Likely, you do not have permission to read it.\n");
 			ex.printStackTrace(System.out);
-			
-			error = 1;
 		}
 		
 		catch (NullPointerException ex)
 		{
 			System.out.println("The FileInputStream is null.\n");
 			ex.printStackTrace(System.out);
-			
-			error = 2;
 		}
 		
 		catch (Exception ex)
 		{
 			System.out.println("There was an error.\n");
 			ex.printStackTrace(System.out);
-			
-			error = 3;
 		}
 		
-		return error;
+		return list;
 	}
 	
 	/**
@@ -179,14 +176,21 @@ public class IO
 	 * @throws FileNotFoundException
 	 * @throws NullPointerException
 	 */
-	public static int writeToManifest (PlayerNode head) 
+	public static int writeToManifest (LinkedList<Player> list) 
 			throws FileNotFoundException, NullPointerException
 	{
 		int error;
+		PrintWriter writer = null;
+		Player players[] = (Player[]) list.toArray();
 		
 		try
 		{	
-			FileOutputStream fileOut = new FileOutputStream("manif.est");
+			writer = new PrintWriter ("manifest.list", "UTF-8");
+			
+			int rank = 0;
+			
+			while (rank < players.length)
+				writer.println(players[rank].getName());
 			
 			error = 0;
 		}
@@ -210,6 +214,11 @@ public class IO
 			error = 3;
 			System.out.println("There was an error.\n");
 			ex.printStackTrace(System.out);
+		}
+		
+		finally
+		{
+			writer.close();
 		}
 		
 		return error;
