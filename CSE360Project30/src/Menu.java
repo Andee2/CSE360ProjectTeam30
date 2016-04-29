@@ -56,6 +56,16 @@ public class Menu extends JPanel
 
 	private GamePlay gamePlay;
 	//private LinkedList<Player> rankedList;
+	
+	
+	//Opening Dialouge
+	String plot = String.format("A goblin army has appeared on the boarders of your kingdom and the numbers are not in your favor.\n"
+			+"Their fleet of soldiers out numbers the capabilities of your people. However you recognize their\n"
+			+"banners and recall that their supreme commander is a sucker for a good gamble. After appealing to\n"
+			+"his gambling addictions, and threatening to use scorched-earth tactics, you convince the supreme\n"
+			+"commander to take on a bet. You wager your unconditional surrender and he wagers an oath to leave your\n"
+			+"kingdom and return home. A pair of six-sided dice are brought out to the table where the negotiations\n"
+			+"were being held. Now you must gamble against the supreme commander's top three generals.");
 
 	public Menu()
 	{
@@ -101,7 +111,7 @@ public class Menu extends JPanel
 		//backButton.setVisible(false);			//This button will Not be shown until the "game" end
 
 		//Text Area for different purposes
-		listOfPlayer = new TextArea("testing");
+		listOfPlayer = new TextArea(plot);
 
 		//Create a text field for the player to fill out name and create button
 		createProfilePanel = new JPanel();

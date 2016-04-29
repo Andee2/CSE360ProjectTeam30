@@ -18,9 +18,10 @@ rolled more accurately than the opponent can. In the event both player and oppon
 number, the player will win the round. The player will face three separate opponents for three rounds each.
 
 The Plot:
-A goblin army has appeared on the boarders of your kingdom and the numbers are not in your favor. Thier fleet of soldiers out
-numbers the capabilities of your people. However you recognize their banners and recall that their supreme comander is a 
-sucker for a good gamble. After appealling to his gambling addictions, and threatening to use scortched-earth tactics, you
-convince the supreme commander to take on a bet. You wager your unconditional surrender and he wagers an oath to leave your
-kindom and return home. A pair of six-sided dice are brought out to the tabel where the negotations were being held. Now you
-must gamble against the supreme commander and his top two generals.
+A goblin army has appeared on the boarders of your kingdom and the numbers are not in your favor.
+Their fleet of soldiers out numbers the capabilities of your people. However you recognize their
+banners and recall that their supreme commander is a sucker for a good gamble. After appealing to
+his gambling addictions, and threatening to use scorched-earth tactics, you convince the supreme
+commander to take on a bet. You wager your unconditional surrender and he wagers an oath to leave your
+kingdom and return home. A pair of six-sided dice are brought out to the table where the negotiations
+were being held. Now you must gamble against the supreme commander's top three generals.
