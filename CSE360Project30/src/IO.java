@@ -26,7 +26,7 @@ public class IO
 		
 		try
 		{	
-			FileOutputStream fileOut = new FileOutputStream ("profiles/" + username + ".prfl");
+			FileOutputStream fileOut = new FileOutputStream (username + ".prfl");
 			ObjectOutputStream playerOut = new ObjectOutputStream (fileOut);
 			
 			playerOut.writeObject (toSave);
@@ -84,7 +84,7 @@ public class IO
 		
 		try
 		{
-			FileInputStream fileIn = new FileInputStream ("profiles/" + username + ".prfl");
+			FileInputStream fileIn = new FileInputStream (username + ".prfl");
 			ObjectInputStream playerIn = new ObjectInputStream (fileIn);
 			
 			retrieved = (Player) playerIn.readObject ();
