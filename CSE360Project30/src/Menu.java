@@ -30,10 +30,11 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StreamCorruptedException;
-
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
+
 import java.util.LinkedList;
 
 public class Menu extends JPanel
@@ -144,6 +145,19 @@ public class Menu extends JPanel
 			ex.printStackTrace(System.out);
 		}
 		*/
+		
+		//PlayerStats Load in list
+		
+		try 
+		{
+			PlayerList.loadList();
+		}
+		catch (FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			System.out.println("PlayerStats.txt was not found or could not be opened.\n");
+			e.printStackTrace();
+		}
 
 /*===================================[BUTTON LISTENER]=================================*/
 		//Menus Buttons
@@ -423,6 +437,15 @@ public class Menu extends JPanel
 
 				if(gameOver)
 				{
+					try
+					{
+						PlayerList.saveList();
+					}
+					catch (FileNotFoundException ex)
+					{
+						System.out.println("PlayerStats.txt was not found or could not be opened.\n");
+						ex.printStackTrace(System.out);
+					}
 					//rankedList = gamePlay.getList();
 					gamePlay = null;
 					menuOption.setVisible(true);
@@ -431,6 +454,15 @@ public class Menu extends JPanel
 			}
 			if	(action == giveUpButton)			//set Visibility to Menu panel and Battle panel
 			{
+				try
+				{
+					PlayerList.saveList();
+				}
+				catch (FileNotFoundException ex)
+				{
+					System.out.println("PlayerStats.txt was not found or could not be opened.\n");
+					ex.printStackTrace(System.out);
+				}
 				gamePlay = null;
 				menuOption.setVisible(true);
 				battleOption.setVisible(false);

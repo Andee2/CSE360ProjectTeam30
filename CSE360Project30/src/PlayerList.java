@@ -1,4 +1,9 @@
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class PlayerList {
 
@@ -52,5 +57,52 @@ public class PlayerList {
 		}
 		return position;
 
+	}
+	
+	public static void saveList() throws FileNotFoundException
+	{
+		try
+		{
+			PrintWriter printWrite = new PrintWriter(new FileOutputStream("PlayerStats.txt"));
+
+			for(int count = 0; count < playerStats.size(); count++)
+			{
+				printWrite.println(playerStats.get(count));
+			}
+			printWrite.close();
+		}
+		catch (FileNotFoundException ex)
+		{
+			System.out.println("PlayerStats.txt was not found or could not be opened.\n");
+			ex.printStackTrace(System.out);
+		}
+	}
+	
+	public static void loadList() throws FileNotFoundException
+	{
+		try
+		{
+			FileInputStream fileIn = new FileInputStream("PlayerStats.txt");
+			Scanner readIn = new Scanner(fileIn);
+
+			while(readIn.hasNextLine())
+			{
+				if(readIn.hasNextInt())
+				{
+					int element = readIn.nextInt();
+					String emptySpace = readIn.nextLine();
+					playerStats.add(element);
+				}
+				else
+				{
+					playerStats.add(readIn.nextLine());
+				}
+			}
+		}
+		catch (FileNotFoundException ex)
+		{
+			System.out.println("PlayerStats.txt was not found or could not be opened.\n");
+			ex.printStackTrace(System.out);
+		}
 	}
 }
