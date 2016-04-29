@@ -140,63 +140,67 @@ public class IO
 	{
 		BufferedReader reader = null;
 		LinkedList<Player> list = null;
+		boolean manifestExists = true;
 		
-		File file = new File("manifest.list");
-		if (!file.exists())
-			return list;
-
-		try
-		{
-			reader = new BufferedReader (new FileReader ("manifest.list"));
-			String currentLine = reader.readLine();
-			
-			while (!currentLine.equals("null"))
-			{
-				System.out.println(currentLine);
-				
-				if (list == null)
-				{
-					list = new LinkedList<Player>();
-					list.add (retrieve(currentLine));
-				}
-				else
-					list.add (retrieve(currentLine));
-				
-				currentLine = reader.readLine();
-			}
-			
-		}
+		File manifest = new File("manifest.list");
+		if (!manifest.exists())
+			manifestExists = false;
 		
-		catch (FileNotFoundException ex)
-		{
-			System.out.println("The manifest cannot be read. The file may not exist.\n");
-			ex.printStackTrace(System.out);
-			return null;
-		}
-		
-		catch (NullPointerException ex)
-		{
-			System.out.println("The FileInputStream is null.\n");
-			ex.printStackTrace(System.out);
-		}
-		
-		catch (Exception ex)
-		{
-			System.out.println("There was an error.\n");
-			ex.printStackTrace(System.out);
-		}
-		
-		finally
+		if (manifestExists)
 		{
 			try
 			{
-				reader.close();
-			} 
+				reader = new BufferedReader (new FileReader ("manifest.list"));
+				String currentLine = reader.readLine();
+				
+				while (!currentLine.equals("null"))
+				{
+					System.out.println(currentLine);
+					
+					if (list == null)
+					{
+						list = new LinkedList<Player>();
+						list.add (retrieve(currentLine));
+					}
+					else
+						list.add (retrieve(currentLine));
+					
+					currentLine = reader.readLine();
+				}
+				
+			}
 			
-			catch (IOException ex)
+			catch (FileNotFoundException ex)
 			{
-				System.out.println("IO Exception.\n");
+				System.out.println("The manifest cannot be read. The file may not exist.\n");
 				ex.printStackTrace(System.out);
+				return null;
+			}
+			
+			catch (NullPointerException ex)
+			{
+				System.out.println("The FileInputStream is null.\n");
+				ex.printStackTrace(System.out);
+			}
+			
+			catch (Exception ex)
+			{
+				System.out.println("There was an error.\n");
+				ex.printStackTrace(System.out);
+			}
+			
+			finally
+			{
+				try
+				{
+					reader.close();
+				} 
+				
+				catch (IOException ex)
+				{
+					System.out.println("IO Exception.\n");
+					ex.printStackTrace(System.out);
+				}
 			}
 		}
 		
