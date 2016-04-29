@@ -17,7 +17,7 @@ public class GamePlay
 	{
 		activePlayer = new Player();
 		activePlayer.resetScore();
-		
+
 		activeDie = new Die();
 		currentGame = new GameMatch();
 		matchEnded = false;
@@ -30,7 +30,7 @@ public class GamePlay
 	{
 		activePlayer = Tester;
 		activePlayer.resetScore();
-		
+
 		activeDie = new Die();
 		currentGame = new GameMatch();
 		matchEnded = false;
@@ -42,7 +42,7 @@ public class GamePlay
 	/**
 	 * rollDice simulates a round in the game. This includes picking the number to match, picking the opponent's number,
 	 * comparing the player's guess and opponent's guess to the number to match, decides the winner and updates scores
-	 * 
+	 *
 	 * @calls Die.roll(), Die.mroll(), GameMatch.playerWinsRound(int, int, int), GameMatch.updateScore(boolean, int)
 	 * @param playerNumber
 	 * @return
@@ -75,7 +75,7 @@ public class GamePlay
 			feedback = feedback + "You have won this round!\n";
 			//probably need to edit if gamematch score is incremental and not singular
 			//gameplay is not working properly as well so need to edit later when it is fixed - mkchun
-			
+
 		}
 		else
 		{
@@ -101,7 +101,7 @@ public class GamePlay
 	}
 	 */
 
-	private String nextRound() throws FileNotFoundException, NullPointerException, IOException 
+	private String nextRound() throws FileNotFoundException, NullPointerException, IOException
 	{
 		String result = "";
 		boolean cont = currentGame.nextRound();
@@ -139,11 +139,11 @@ public class GamePlay
 		{
 			gameOver = true;
 			activePlayer.resetScore();
-			
+
 			if(matchesWon > 1)
-			{		
+			{
 				//Won the game
-				
+
 			}
 			else
 			{
@@ -153,6 +153,11 @@ public class GamePlay
 		else;
 
 		return "Not yet implemented";
+	}
+
+	public boolean getGameOver()
+	{
+		return gameOver;
 	}
 
 }
