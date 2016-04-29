@@ -34,7 +34,7 @@ import java.io.StreamCorruptedException;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-//THIS IS A TEST!!!!
+
 
 public class Menu extends JPanel
 {
@@ -92,11 +92,11 @@ public class Menu extends JPanel
 
 		//Button in the Battle
 		rollButton = new JButton("Roll");
-		backButton = new JButton("Back");
+		//backButton = new JButton("Back");
 		giveUpButton = new JButton("Give Up");
 		diceChoices = new JComboBox<String>(dice);
 
-		backButton.setVisible(false);			//This button will Not be shown until the "game" end
+		//backButton.setVisible(false);			//This button will Not be shown until the "game" end
 
 		//Text Area for different purposes
 		listOfPlayer = new TextArea("testing");
@@ -131,7 +131,7 @@ public class Menu extends JPanel
 		//Battle Buttons
 		battleButton.addActionListener(new ButtonListener());
 		rollButton.addActionListener(new ButtonListener());
-		backButton.addActionListener(new ButtonListener());
+		//backButton.addActionListener(new ButtonListener());
 		giveUpButton.addActionListener(new ButtonListener());
 
 		diceChoices.addActionListener(new ComboListener());
@@ -168,7 +168,7 @@ public class Menu extends JPanel
 		quitPanel = new JPanel();
 		quitPanel.setLayout(new GridLayout(2, 1));
 		quitPanel.add(giveUpButton);
-		quitPanel.add(backButton);
+		//quitPanel.add(backButton);
 
 		battleOption = new JPanel();
 		battleOption.setLayout(new GridLayout(4, 1));
@@ -311,7 +311,7 @@ public class Menu extends JPanel
 				message.setText("");
 				createProfilePanel.setVisible(false);
 				//Implement the "show the ranking" here
-				
+
 				if(currentPlayer == null){
 					String ranking = "";
 					listOfPlayer.setText("No Player Selected");
@@ -320,7 +320,7 @@ public class Menu extends JPanel
 				String ranking = "";
 				listOfPlayer.setText(currentPlayer.getName() + "\n" + "Player score: " + ranking + currentPlayer.getTotalScore());
 				}
-				
+
 			}
 			if (action == battleButton)				//set Visibility to Menu panel and Battle panel
 			{
@@ -335,7 +335,8 @@ public class Menu extends JPanel
 					menuOption.setVisible(false);
 					battleOption.setVisible(true);
 
-					listOfPlayer.setText("Beginning Round 1 of 3\n\n");
+					listOfPlayer.setText("Beginning Match 1 of 3\n"
+							+ "Beginning Round 1 of 3\n\n");
 					}
 			}
 			if (action == createButton)
@@ -344,21 +345,24 @@ public class Menu extends JPanel
 				createProfilePanel.setVisible(true);
 				loadProfilePanel.setVisible(false);
 			}
+			/* Not currently needed, might use later
 			if (action == backButton)				//set Visibility to Menu panel and Battle panel
 			{
 				menuOption.setVisible(true);
 				battleOption.setVisible(false);
 				//Update info. implementation
 			}
+			*/
 			if	(action == rollButton)
 			{
+
 				try {
 
 					String gameDetails = gamePlay.rollDice(playerNum); //Locks in player's guess and begins calculating a winner
 
 					listOfPlayer.append(gameDetails);
 
-					backButton.setVisible(true);
+					//backButton.setVisible(true);
 
 					//IO.write(currentPlayer, newPlayerProfile);
 
@@ -372,9 +376,19 @@ public class Menu extends JPanel
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+
+				boolean gameOver = gamePlay.getGameOver();
+
+				if(gameOver)
+				{
+					gamePlay = null;
+					menuOption.setVisible(true);
+					battleOption.setVisible(false);
+				}
 			}
 			if	(action == giveUpButton)			//set Visibility to Menu panel and Battle panel
 			{
+				gamePlay = null;
 				menuOption.setVisible(true);
 				battleOption.setVisible(false);
 				//Implementation if needed
