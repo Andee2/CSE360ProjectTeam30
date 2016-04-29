@@ -1,5 +1,7 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.LinkedList;
 
 public class GamePlay
 {
@@ -12,7 +14,8 @@ public class GamePlay
 	private int matchesWon;
 	private boolean matchEnded;
 	private boolean gameOver;
-
+	private LinkedList<Player> rankedList;
+	
 	public GamePlay()
 	{
 		activePlayer = new Player();
@@ -26,7 +29,7 @@ public class GamePlay
 		gameOver = false;
 	}
 
-	public GamePlay(Player Tester)
+	public GamePlay(Player Tester, LinkedList<Player> list)
 	{
 		activePlayer = Tester;
 		activePlayer.resetScore();
@@ -37,6 +40,7 @@ public class GamePlay
 		numOfMatches = 0;
 		matchesWon = 0;
 		gameOver = false;
+		rankedList = list;
 	}
 
 	/**
@@ -88,12 +92,12 @@ public class GamePlay
 		if(matchEnded)
 		{
 			activePlayer.incrementScore(currentGame.getFinalPlayerScore());
-			IO.write(activePlayer, activePlayer.getName());
-
 			feedback = feedback + nextMatch();
-
 			currentGame = new GameMatch();
 			matchEnded = false;
+			rankedList.add(activePlayer);
+			Collections.sort(rankedList);
+			IO.writeToManifest(rankedList);
 		}
 
 		return feedback;
@@ -125,7 +129,7 @@ public class GamePlay
 				result = "\nYou have lost this match!\n";
 				activePlayer.incrementLossCount(1);
 			}
-
+			IO.write(activePlayer, activePlayer.getName());
 
 			numOfMatches++;
 			matchEnded = true;

@@ -34,7 +34,7 @@ import java.io.StreamCorruptedException;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-
+import java.util.LinkedList;
 
 public class Menu extends JPanel
 {
@@ -54,6 +54,7 @@ public class Menu extends JPanel
 	private Player currentPlayer;
 
 	private GamePlay gamePlay;
+	private LinkedList<Player> rankedList;
 
 	public Menu()
 	{
@@ -118,7 +119,29 @@ public class Menu extends JPanel
 
 		loadProfilePanel.setVisible(false);		//This will show when the player click the the player click recreate
 
-
+		
+		//initializes and loads the rankedList from the manifest
+		rankedList = new LinkedList<Player>();
+		try 
+		{
+			rankedList = IO.readFromManifest();
+		} 
+		catch (FileNotFoundException ex) 
+		{
+			System.out.println("The file does not exist, or cannot be opened. "
+					+ "Check to see if you're using the correct spelling and case, or if the file exists.");
+			ex.printStackTrace(System.out);
+		} 
+		catch (NullPointerException ex) 
+		{
+			System.out.println("The filename is incorrect, or the file is corrupted.");
+			ex.printStackTrace(System.out);
+		} 
+		catch (IOException ex) 
+		{
+			System.out.println("There was an error reading from the File Input Stream.");
+			ex.printStackTrace(System.out);
+		}
 
 /*===================================[BUTTON LISTENER]=================================*/
 		//Menus Buttons
@@ -221,7 +244,7 @@ public class Menu extends JPanel
 							currentPlayer = newPlayer; //global player
 
 							//Creates the new Player's profile and starts system for game
-							gamePlay = new GamePlay(currentPlayer);
+							gamePlay = new GamePlay(currentPlayer, rankedList);
 
 
 							message.setText("Profile added");
@@ -269,7 +292,7 @@ public class Menu extends JPanel
 					{
 						//loads the Player's profile and starts system for game
 						currentPlayer = IO.retrieve(loadProfile);
-						gamePlay = new GamePlay(currentPlayer);
+						gamePlay = new GamePlay(currentPlayer, rankedList);
 						message.setText("Profile loaded");
 						message.setForeground(Color.green);
 						createTextField.setText("");
@@ -312,13 +335,25 @@ public class Menu extends JPanel
 				createProfilePanel.setVisible(false);
 				//Implement the "show the ranking" here
 
-				if(currentPlayer == null){
+				if(currentPlayer == null)
+				{
 					String ranking = "";
 					listOfPlayer.setText("No Player Selected");
-				} else {
-				//test code for displaying rank/stats
-				String ranking = "";
-				listOfPlayer.setText(currentPlayer.getName() + "\n" + "Player score: " + ranking + currentPlayer.getTotalScore());
+				} 
+				else 
+				{
+					//test code for displaying rank/stats
+					LinkedList<Player> tempList = rankedList;
+					String ranking = "";
+					Player current = tempList.pop();
+					while(current != null)
+					{
+						ranking = ranking + current;
+						current = tempList.pop();
+					}
+					
+					//listOfPlayer.setText(currentPlayer.getName() + "\n" + "Player score: " + ranking + currentPlayer.getTotalScore());
+					listOfPlayer.setText(ranking);
 				}
 
 			}
@@ -362,6 +397,9 @@ public class Menu extends JPanel
 
 					listOfPlayer.append(gameDetails);
 
+					
+					
+					
 					//backButton.setVisible(true);
 
 					//IO.write(currentPlayer, newPlayerProfile);

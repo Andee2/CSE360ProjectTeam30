@@ -6,7 +6,7 @@ import java.io.Serializable;
  *
  */
 
-public class Player implements Serializable{
+public class Player implements Serializable, Comparable<Player>{
 
 	private String name; 		//Player name
 	private int currentScore; 	//Total score of player
@@ -215,6 +215,28 @@ public class Player implements Serializable{
 	 */
 	public void incrementDeathCount(int deaths){		//increment deathCount
 		deathCount = deathCount + deaths;
+	}
+	
+	/**compares two players by score
+	 * @param E is a player object to be compared
+	 */
+	public int compareTo(Player E)
+	{
+			  if(this.getScore() < E.getScore())
+			  {
+				  return 1;
+			  } 
+			  else 
+			  {
+				  return -1;
+			  }		
+	}
+	
+	public String toString()
+	{
+		String details = "";
+		details = "Player Name: " + name + " Player Score:"+ totalScore + "\n";
+		return details;
 	}
 	
 }
