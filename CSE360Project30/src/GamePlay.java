@@ -15,7 +15,7 @@ public class GamePlay
 	private boolean matchEnded;
 	private boolean gameOver;
 	private LinkedList<Player> rankedList = new LinkedList<Player>();
-	
+
 	public GamePlay()
 	{
 		activePlayer = new Player();
@@ -92,9 +92,11 @@ public class GamePlay
 		if(matchEnded)
 		{
 			activePlayer.incrementScore(currentGame.getFinalPlayerScore());
+			PlayerList.updateScore(activePlayer.getName(), activePlayer.getTotalScore());
 			feedback = feedback + nextMatch();
 			currentGame = new GameMatch();
 			matchEnded = false;
+
 			/*rankedList.add(activePlayer);
 			Collections.sort(rankedList);
 			IO.writeToManifest(rankedList);*/
@@ -148,9 +150,9 @@ public class GamePlay
 		if(numOfMatches > 2)
 		{
 			gameOver = true;
-			rankedList.add(activePlayer);
-			Collections.sort(rankedList);
-			IO.writeToManifest(rankedList);
+//			rankedList.add(activePlayer);
+//			Collections.sort(rankedList);
+//			IO.writeToManifest(rankedList);
 			activePlayer.resetScore();
 
 			if(matchesWon > 1)
@@ -180,7 +182,7 @@ public class GamePlay
 	{
 		return gameOver;
 	}
-	
+
 	public LinkedList<Player> getList()
 	{
 		return rankedList;
