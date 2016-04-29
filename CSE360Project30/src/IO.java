@@ -47,7 +47,7 @@ public class IO
 		catch (IOException ex)
 		{
 			error = 2;
-			System.out.println("There was an error writing to the File Output Stream.\n");
+			System.out.println("There was an error writing to the FileOutputStream.\n");
 			ex.printStackTrace(System.out);
 		}
 		
@@ -107,7 +107,7 @@ public class IO
 		
 		catch (IOException ex)
 		{
-			System.out.println("There was an error reading from the File Input Stream.\n");
+			System.out.println("There was an error reading from the FileInputStream.\n");
 			ex.printStackTrace(System.out);
 		}
 		
@@ -135,25 +135,24 @@ public class IO
 	 * @throws NullPointerException
 	 * @throws IOException 
 	 */
-	public static LinkedList<Player> readFromManifest () 
+	public static LinkedList<Player> readFromManifest() 
 			throws FileNotFoundException, NullPointerException, IOException
 	{
 		BufferedReader reader = null;
 		LinkedList<Player> list = null;
 		
-		File file = new File("manifest.list");
-		if ( !file.exists() )
-		    return list;
+		File file = new File ("manifest.list");
+		if (!file.exists())
+			return list;
 		
 		try
 		{
-			String currentLine = "";
-			
 			reader = new BufferedReader (new FileReader ("manifest.list"));
+			String currentLine = reader.readLine();
 			
-			while (currentLine != null && reader != null)
+			while (!currentLine.equals("null"))
 			{
-				currentLine = reader.readLine();
+				System.out.println(currentLine);
 				
 				if (list == null)
 				{
@@ -162,6 +161,8 @@ public class IO
 				}
 				else
 					list.add (retrieve(currentLine));
+				
+				currentLine = reader.readLine();
 			}
 			
 		}
@@ -231,9 +232,12 @@ public class IO
 			
 			while (rank < players.length)
 			{
-				writer.println(players[rank].getName());
+				writer.print(players[rank].getName());
+				writer.print('\n');
 				rank++;
 			}
+			
+			writer.println("null");
 			
 			error = 0;
 		}
