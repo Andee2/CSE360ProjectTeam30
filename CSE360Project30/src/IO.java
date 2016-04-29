@@ -130,7 +130,10 @@ public class IO
 	 * This allows to open the manifest file to read from it. Just call the
 	 * method, and it returns the already sorted LinkedList from the manifest.
 	 * 
-	 * @return The LinkedList of that was stored from the manifest
+	 * @return The LinkedList that was stored in the manifest. If it was sorted before,
+	 * 		   it is returned sorted. If there is no LinkedList stored in the manifest,
+	 * 		   or the manifest does not exist, then it returns <b>null</b>.
+	 * 
 	 * @throws FileNotFoundException
 	 * @throws NullPointerException
 	 * @throws IOException 
@@ -208,10 +211,15 @@ public class IO
 	}
 	
 	/**
-	 * This Writes to the manifest the score of the player. Just provide
+	 * This writes to the manifest the name of the player. Just provide
 	 * the LinkedList, and it will write the manifest based on that.
 	 * 
-	 * @param list - The LinkedList of players.
+	 * @param list - The LinkedList of players. If it is sorted, it will be
+	 * 				 stored sorted.
+	 * 
+	 * @return The integer value of the error. Can be used for testing,
+	 * 		   if needed.
+	 * 
 	 * @throws FileNotFoundException
 	 * @throws NullPointerException
 	 */
