@@ -34,7 +34,7 @@ import java.io.StreamCorruptedException;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-//THIS IS A TEST!!!!
+
 
 public class Menu extends JPanel
 {
@@ -311,7 +311,7 @@ public class Menu extends JPanel
 				message.setText("");
 				createProfilePanel.setVisible(false);
 				//Implement the "show the ranking" here
-				
+
 				if(currentPlayer == null){
 					String ranking = "";
 					listOfPlayer.setText("No Player Selected");
@@ -320,7 +320,7 @@ public class Menu extends JPanel
 				String ranking = "";
 				listOfPlayer.setText(currentPlayer.getName() + "\n" + "Player score: " + ranking + currentPlayer.getTotalScore());
 				}
-				
+
 			}
 			if (action == battleButton)				//set Visibility to Menu panel and Battle panel
 			{

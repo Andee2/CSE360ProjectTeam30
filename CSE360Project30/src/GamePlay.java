@@ -8,22 +8,35 @@ public class GamePlay
 	private GameMatch currentGame;
 	private int monsterRoll;
 	//private int playerRoll;
+	private int numOfMatches;
+	private int matchesWon;
 	private boolean matchEnded;
+	private boolean gameOver;
 
 	public GamePlay()
 	{
 		activePlayer = new Player();
+		activePlayer.resetScore();
+		
 		activeDie = new Die();
 		currentGame = new GameMatch();
 		matchEnded = false;
+		numOfMatches = 0;
+		matchesWon = 0;
+		gameOver = false;
 	}
 
 	public GamePlay(Player Tester)
 	{
 		activePlayer = Tester;
+		activePlayer.resetScore();
+		
 		activeDie = new Die();
 		currentGame = new GameMatch();
 		matchEnded = false;
+		numOfMatches = 0;
+		matchesWon = 0;
+		gameOver = false;
 	}
 
 	/**
@@ -62,7 +75,7 @@ public class GamePlay
 			feedback = feedback + "You have won this round!\n";
 			//probably need to edit if gamematch score is incremental and not singular
 			//gameplay is not working properly as well so need to edit later when it is fixed - mkchun
-			activePlayer.incrementScore(currentGame.getFinalPlayerScore());
+			
 		}
 		else
 		{
@@ -71,6 +84,13 @@ public class GamePlay
 		}
 
 		feedback = feedback + nextRound();
+
+		if(matchEnded)
+		{
+			activePlayer.incrementScore(currentGame.getFinalPlayerScore());
+			feedback = feedback + nextMatch();
+		}
+
 		return feedback;
 	}
 
@@ -79,7 +99,7 @@ public class GamePlay
 	{
 		playerRoll = number;
 	}
-	*/
+	 */
 
 	private String nextRound() throws FileNotFoundException, NullPointerException, IOException 
 	{
@@ -88,10 +108,10 @@ public class GamePlay
 		if (!cont)
 		{
 			int roundsWin = currentGame.getPlayerWins();
-			matchEnded = true;
 
 			if(roundsWin > 1)
 			{
+				matchesWon++;
 				result = "\nYou have won this match!\n";
 				activePlayer.incrementWinCount(1);
 			}
@@ -101,6 +121,9 @@ public class GamePlay
 				activePlayer.incrementLossCount(1);
 			}
 			IO.write(activePlayer, activePlayer.getName());
+
+			numOfMatches++;
+			matchEnded = true;
 		}
 		else
 		{
@@ -108,6 +131,28 @@ public class GamePlay
 			result = String.format("\nBeginning Round %d of 3\n\n", roundCount);
 		}
 		return result;
+	}
+
+	private String nextMatch()
+	{
+		if(numOfMatches > 2)
+		{
+			gameOver = true;
+			activePlayer.resetScore();
+			
+			if(matchesWon > 1)
+			{		
+				//Won the game
+				
+			}
+			else
+			{
+				//Lost the game
+			}
+		}
+		else;
+
+		return "Not yet implemented";
 	}
 
 }
