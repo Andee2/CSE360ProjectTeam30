@@ -141,10 +141,10 @@ public class IO
 		BufferedReader reader = null;
 		LinkedList<Player> list = null;
 		
-		File file = new File ("manifest.list");
+		File file = new File("manifest.list");
 		if (!file.exists())
 			return list;
-		
+
 		try
 		{
 			reader = new BufferedReader (new FileReader ("manifest.list"));
