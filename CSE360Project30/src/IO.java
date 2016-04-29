@@ -141,19 +141,24 @@ public class IO
 		BufferedReader reader = null;
 		LinkedList<Player> list = null;
 		
+		File file = new File("manifest.list");
+		if ( !file.exists() )
+		    return list;
+		
 		try
 		{
 			String currentLine = "";
+			
 			reader = new BufferedReader (new FileReader ("manifest.list"));
 			
-			while (currentLine != null)
+			while (currentLine != null && reader != null)
 			{
 				currentLine = reader.readLine();
 				
 				if (list == null)
 				{
 					list = new LinkedList<Player>();
-					list.add(retrieve(currentLine));
+					list.add (retrieve(currentLine));
 				}
 				else
 					list.add (retrieve(currentLine));
@@ -163,8 +168,9 @@ public class IO
 		
 		catch (FileNotFoundException ex)
 		{
-			System.out.println("The manifest cannot be read. Likely, you do not have permission to read it.\n");
+			System.out.println("The manifest cannot be read. The file may not exist.\n");
 			ex.printStackTrace(System.out);
+			return null;
 		}
 		
 		catch (NullPointerException ex)
@@ -204,11 +210,18 @@ public class IO
 	 * @throws FileNotFoundException
 	 * @throws NullPointerException
 	 */
-	public static void writeToManifest (LinkedList<Player> list) 
+	public static int writeToManifest (LinkedList<Player> list) 
 			throws FileNotFoundException, NullPointerException
 	{
 		PrintWriter writer = null;
-		Player players[] = (Player[]) list.toArray();
+		
+		Object _players[] = list.toArray();
+		Player players[] = new Player[_players.length];
+		
+		for (int pos = 0; pos < _players.length; pos++)
+			players[pos] = (Player) _players[pos];
+		
+		int error = -1;
 		
 		try
 		{	
@@ -217,30 +230,40 @@ public class IO
 			int rank = 0;
 			
 			while (rank < players.length)
+			{
 				writer.println(players[rank].getName());
+				rank++;
+			}
+			
+			error = 0;
 		}
 		
 		catch (FileNotFoundException ex)
 		{
 			System.out.println("An error occured saving to the file.\n");
 			ex.printStackTrace(System.out);
+			error = 1;
 		}
 		
 		catch (NullPointerException ex)
 		{
 			System.out.println("The FileOutputStream is null.\n");
 			ex.printStackTrace(System.out);
+			error = 2;
 		}
 		
 		catch (Exception ex)
 		{
 			System.out.println("There was an error.\n");
 			ex.printStackTrace(System.out);
+			error = 3;
 		}
 		
 		finally
 		{
 			writer.close();
 		}
+		
+		return error;
 	}
 }
