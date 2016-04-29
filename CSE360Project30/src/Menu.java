@@ -54,7 +54,7 @@ public class Menu extends JPanel
 	private Player currentPlayer;
 
 	private GamePlay gamePlay;
-	private LinkedList<Player> rankedList;
+	//private LinkedList<Player> rankedList;
 
 	public Menu()
 	{
@@ -121,6 +121,7 @@ public class Menu extends JPanel
 
 
 		//initializes and loads the rankedList from the manifest
+		/*
 		rankedList = new LinkedList<Player>();
 		try
 		{
@@ -142,6 +143,7 @@ public class Menu extends JPanel
 			System.out.println("There was an error reading from the File Input Stream.");
 			ex.printStackTrace(System.out);
 		}
+		*/
 
 /*===================================[BUTTON LISTENER]=================================*/
 		//Menus Buttons
@@ -245,7 +247,7 @@ public class Menu extends JPanel
 							currentPlayer = newPlayer; //global player
 
 							//Creates the new Player's profile and starts system for game
-							gamePlay = new GamePlay(currentPlayer, rankedList);
+							gamePlay = new GamePlay(currentPlayer);
 
 
 							message.setText("Profile added");
@@ -293,7 +295,7 @@ public class Menu extends JPanel
 					{
 						//loads the Player's profile and starts system for game
 						currentPlayer = IO.retrieve(loadProfile);
-						gamePlay = new GamePlay(currentPlayer, rankedList);
+						gamePlay = new GamePlay(currentPlayer);
 						message.setText("Profile loaded");
 						message.setForeground(Color.green);
 						createTextField.setText("");
@@ -421,7 +423,7 @@ public class Menu extends JPanel
 
 				if(gameOver)
 				{
-					rankedList = gamePlay.getList();
+					//rankedList = gamePlay.getList();
 					gamePlay = null;
 					menuOption.setVisible(true);
 					battleOption.setVisible(false);

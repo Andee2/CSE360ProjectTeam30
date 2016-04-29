@@ -15,18 +15,18 @@ public class PlayerList {
 		String result = "Name:\t\tScore:\n";
 		int numbering = 1;
 
-		for(int i = 1; i <= playerStats.size(); i++)
+		for(int count = 1; count <= playerStats.size(); count++)
 		{
 
-			if(i % 2 != 0)
+			if(count % 2 != 0)
 			{
 				result = result + String.format("%d.", numbering);
-				result = result + String.format("%s\t\t", playerStats.get(i - 1));
+				result = result + String.format("%s\t\t", playerStats.get(count - 1));
 				numbering++;
 			}
 			else
 			{
-				result = result + String.format("%d\n", playerStats.get(i - 1));
+				result = result + String.format("%d\n", playerStats.get(count - 1));
 
 			}
 		}

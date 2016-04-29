@@ -14,7 +14,7 @@ public class GamePlay
 	private int matchesWon;
 	private boolean matchEnded;
 	private boolean gameOver;
-	private LinkedList<Player> rankedList = new LinkedList<Player>();
+	//private LinkedList<Player> rankedList = new LinkedList<Player>();
 
 	public GamePlay()
 	{
@@ -29,7 +29,7 @@ public class GamePlay
 		gameOver = false;
 	}
 
-	public GamePlay(Player Tester, LinkedList<Player> list)
+	public GamePlay(Player Tester)
 	{
 		activePlayer = Tester;
 		activePlayer.resetScore();
@@ -40,7 +40,7 @@ public class GamePlay
 		numOfMatches = 0;
 		matchesWon = 0;
 		gameOver = false;
-		rankedList = list;
+		//rankedList = list;
 	}
 
 	/**
@@ -77,9 +77,6 @@ public class GamePlay
 		if(playerWin)
 		{
 			feedback = feedback + "You have won this round!\n";
-			//probably need to edit if gamematch score is incremental and not singular
-			//gameplay is not working properly as well so need to edit later when it is fixed - mkchun
-
 		}
 		else
 		{
@@ -182,10 +179,12 @@ public class GamePlay
 	{
 		return gameOver;
 	}
-
+	
+/*
 	public LinkedList<Player> getList()
 	{
 		return rankedList;
 	}
-
+*/
+	
 }
