@@ -1,9 +1,5 @@
-/**
- * This class is to act as the central command module between the other classes in this project
- * @author Andrew Leach
- *
- */
-
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class GamePlay
 {
@@ -12,41 +8,49 @@ public class GamePlay
 	private GameMatch currentGame;
 	private int monsterRoll;
 	//private int playerRoll;
+	private int numOfMatches;
+	private int matchesWon;
 	private boolean matchEnded;
+	private boolean gameOver;
 
-	/**
-	 * Default constructor for GamePlay.class
-	 */
 	public GamePlay()
 	{
 		activePlayer = new Player();
+		activePlayer.resetScore();
+
 		activeDie = new Die();
 		currentGame = new GameMatch();
 		matchEnded = false;
+		numOfMatches = 0;
+		matchesWon = 0;
+		gameOver = false;
 	}
 
-	/**
-	 * Preferred Constructor for GamePlay.class
-	 * Takes in the player's name and creates a player object with it
-	 * @param name
-	 */
-	public GamePlay(String name)
+	public GamePlay(Player Tester)
 	{
-		activePlayer = new Player(name);
+		activePlayer = Tester;
+		activePlayer.resetScore();
+
 		activeDie = new Die();
 		currentGame = new GameMatch();
 		matchEnded = false;
+		numOfMatches = 0;
+		matchesWon = 0;
+		gameOver = false;
 	}
 
 	/**
-	 * Performs the actions of a single round of gameplay
-	 * and returns a String with the details of the round.
+	 * rollDice simulates a round in the game. This includes picking the number to match, picking the opponent's number,
+	 * comparing the player's guess and opponent's guess to the number to match, decides the winner and updates scores
+	 *
+	 * @calls Die.roll(), Die.mroll(), GameMatch.playerWinsRound(int, int, int), GameMatch.updateScore(boolean, int)
 	 * @param playerNumber
-	 * @return A String containing the number guessed by the player,
-	 * the number guessed by the monster, both dice values and their sum,
-	 * the outcome of the round, and the outcome of the match.
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws NullPointerException
+	 * @throws IOException
 	 */
-	public String rollDice(int playerNumber)
+	public String rollDice(int playerNumber) throws FileNotFoundException, NullPointerException, IOException
 	{
 		String feedback;
 
@@ -63,47 +67,53 @@ public class GamePlay
 				+ "The correct guess is %d.\n",
 				playerNumber, monsterRoll, firstRoll, secRoll, sumRoll);
 
-		//Determine who won and update scores
 		boolean playerWin = currentGame.playerWinsRound(playerNumber, monsterRoll, sumRoll);
 		currentGame.updateScore(playerWin, sumRoll);
 
 		if(playerWin)
 		{
 			feedback = feedback + "You have won this round!\n";
+			//probably need to edit if gamematch score is incremental and not singular
+			//gameplay is not working properly as well so need to edit later when it is fixed - mkchun
+
 		}
 		else
 		{
 			feedback = feedback + "You have lost this round!\n";
+			//no points for loss
 		}
 
 		feedback = feedback + nextRound();
+
+		if(matchEnded)
+		{
+			activePlayer.incrementScore(currentGame.getFinalPlayerScore());
+			feedback = feedback + nextMatch();
+			currentGame = new GameMatch();
+			matchEnded = false;
+		}
+
 		return feedback;
 	}
 
+	//No longer needed
 	/*public void setPlayerRoll (int number)
 	{
 		playerRoll = number;
 	}
-	*/
-
-	/**
-	 * Determines if there is another round to the match.
-	 * If the match is determined to be over, then this method
-	 * resolves who won the match and returns the details as a string.
-	 * This method also initiates the saving of the player's information.
-	 * @return String containing the next rounds count or the results of the match
 	 */
-	private String nextRound()
+
+	private String nextRound() throws FileNotFoundException, NullPointerException, IOException
 	{
-		String result;
-		boolean continueGame = currentGame.nextRound();
-		if (!continueGame)
+		String result = "";
+		boolean cont = currentGame.nextRound();
+		if (!cont)
 		{
 			int roundsWin = currentGame.getPlayerWins();
-			matchEnded = true;
 
 			if(roundsWin > 1)
 			{
+				matchesWon++;
 				result = "\nYou have won this match!\n";
 				activePlayer.incrementWinCount(1);
 			}
@@ -113,6 +123,9 @@ public class GamePlay
 				activePlayer.incrementLossCount(1);
 			}
 			IO.write(activePlayer, activePlayer.getName());
+
+			numOfMatches++;
+			matchEnded = true;
 		}
 		else
 		{
@@ -120,6 +133,42 @@ public class GamePlay
 			result = String.format("\nBeginning Round %d of 3\n\n", roundCount);
 		}
 		return result;
+	}
+
+	private String nextMatch()
+	{
+		String result = "";
+		if(numOfMatches > 2)
+		{
+			gameOver = true;
+			activePlayer.resetScore();
+
+			if(matchesWon > 1)
+			{
+				//Won the game
+				result = String.format("\n\nCongratulations! You have beaten %d of the goblin generals!\n"
+						+ "The goblin army is retreating as promised and the kingdom is safe once again!\n", matchesWon);
+			}
+			else
+			{
+				//Lost the game
+				result = String.format("\n\nUnfortunately you were unable to beat the odds.\n"
+						+ "You were able to win against %d of the three generals.\n"
+						+ "You must now surrender your kingdom and its citizens to the goblin empire.\n", matchesWon);
+			}
+		}
+		else
+		{
+			result = String.format("\nBeginning Match %d of 3\n"
+					+ "Beginning Round 1 of 3\n\n", numOfMatches + 1);
+		}
+
+		return result;
+	}
+
+	public boolean getGameOver()
+	{
+		return gameOver;
 	}
 
 }

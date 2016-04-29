@@ -27,26 +27,31 @@
  *	The JLabel message and the JPanel createProfilePanel will be reset to "" and not visible, respectively,
  *	whenever a button in the Menu panel is selected.
  */
-
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.StreamCorruptedException;
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
 
 public class Menu extends JPanel
 {
 	//A Lot of private variable instantiated
 	private JLabel menuLabel, menuInstruction1, menuInstruction2, battleInstruction1, battleInstruction2, battleLabel, message;
 	private JButton backButton, giveUpButton, rankButton, createButton, chooseButton, battleButton,
-		createProfileButton, rollButton, empty, empty2, empty3, empty4;
-	private JPanel menuOption, battleOption, createProfilePanel, cutTopHalf, battlePanel, battleInstruction, quitPanel;
-	private JTextField createTextField;
+		createProfileButton, loadProfileButton, rollButton, empty, empty2, empty3, empty4;
+	private JPanel menuOption, battleOption, createProfilePanel, loadProfilePanel, cutTopHalf, battlePanel, battleInstruction, quitPanel;
+	private JTextField createTextField, createTextField2;
 	private TextArea listOfPlayer;
 	private JComboBox<String> diceChoices;
 
 	private String[] dice = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};
-	private int playerNum;
+	private int playerNum = 2;
 	private String newPlayerProfile;
+
+	private Player currentPlayer;
 
 	private GamePlay gamePlay;
 
@@ -76,20 +81,22 @@ public class Menu extends JPanel
 		empty4.setVisible(false);
 
 		//Buttons in the menu
-		rankButton = new JButton("ranking");
+		rankButton = new JButton("Ranking");
 		createButton = new JButton("Create Profile");
 		chooseButton = new JButton("Choose Profile");		//Will not be visible until the a profile is choose;
 		battleButton = new JButton("Start Fight");		//Will not be visible until a profile is choose
 		createTextField = new JTextField();
+		createTextField2 = new JTextField();
 		createProfileButton = new JButton("Create");
+		loadProfileButton = new JButton("Load");
 
 		//Button in the Battle
 		rollButton = new JButton("Roll");
-		backButton = new JButton("Back");
+		//backButton = new JButton("Back");
 		giveUpButton = new JButton("Give Up");
 		diceChoices = new JComboBox<String>(dice);
 
-		backButton.setVisible(false);			//This button will Not be shown until the "game" end
+		//backButton.setVisible(false);			//This button will Not be shown until the "game" end
 
 		//Text Area for different purposes
 		listOfPlayer = new TextArea("testing");
@@ -103,21 +110,31 @@ public class Menu extends JPanel
 		createProfilePanel.setVisible(false);		//This will show when the player click the the player click recreate
 
 
+		//Create a text field for the player to fill out name and create button
+		loadProfilePanel = new JPanel();
+		loadProfilePanel.setLayout(new BoxLayout(loadProfilePanel, BoxLayout.X_AXIS));
+		loadProfilePanel.add(createTextField2);
+		loadProfilePanel.add(loadProfileButton);
+
+		loadProfilePanel.setVisible(false);		//This will show when the player click the the player click recreate
+
+
+
 /*===================================[BUTTON LISTENER]=================================*/
 		//Menus Buttons
 		rankButton.addActionListener(new ButtonListener());
 		createButton.addActionListener(new ButtonListener());
 		chooseButton.addActionListener(new ButtonListener());
 		createProfileButton.addActionListener(new ButtonListener());
+		loadProfileButton.addActionListener(new ButtonListener());
 
 		//Battle Buttons
 		battleButton.addActionListener(new ButtonListener());
 		rollButton.addActionListener(new ButtonListener());
-		backButton.addActionListener(new ButtonListener());
+		//backButton.addActionListener(new ButtonListener());
 		giveUpButton.addActionListener(new ButtonListener());
 
 		diceChoices.addActionListener(new ComboListener());
-
 
 /*================================[PANEL SET-UP]=========================================*/
 		menuOption = new JPanel();
@@ -130,7 +147,8 @@ public class Menu extends JPanel
 		menuOption.add(createProfilePanel);
 		menuOption.add(empty);
 		menuOption.add(chooseButton);
-		menuOption.add(empty2);
+		menuOption.add(loadProfilePanel);
+		menuOption.add(empty);
 		menuOption.add(rankButton);
 		menuOption.add(empty);
 		menuOption.add(battleButton);
@@ -150,7 +168,7 @@ public class Menu extends JPanel
 		quitPanel = new JPanel();
 		quitPanel.setLayout(new GridLayout(2, 1));
 		quitPanel.add(giveUpButton);
-		quitPanel.add(backButton);
+		//quitPanel.add(backButton);
 
 		battleOption = new JPanel();
 		battleOption.setLayout(new GridLayout(4, 1));
@@ -175,10 +193,12 @@ public class Menu extends JPanel
 
 	private class ButtonListener implements ActionListener
 	{
-		public void actionPerformed(ActionEvent event) {
+		public void actionPerformed(ActionEvent event)
+		{
 			Object action = event.getSource();
 			if (action == createProfileButton)
 			{
+
 				//Implement the "create a new profile" here
 
 				//save whatever in the text field too newPlayerProfile and reset text field
@@ -190,69 +210,185 @@ public class Menu extends JPanel
 				}
 				else
 				{
-					gamePlay = new GamePlay(newPlayerProfile); //Creates the new Player's profile and starts system for game
+					try {
+						Player newPlayer = new Player(newPlayerProfile);
+							if(IO.retrieve(newPlayerProfile) != null){
+								message.setText("Check if profile already exists!");
+								message.setForeground(Color.red);
+						} else {
 
-					message.setText("Profile added");
-					message.setForeground(Color.green);
-					createTextField.setText("");
-					createProfilePanel.setVisible(false);
+							IO.write(newPlayer, newPlayerProfile);
+							currentPlayer = newPlayer; //global player
+
+							//Creates the new Player's profile and starts system for game
+							gamePlay = new GamePlay(currentPlayer);
+
+
+							message.setText("Profile added");
+							message.setForeground(Color.green);
+							createTextField.setText("");
+							createProfilePanel.setVisible(false);
+						}
+
+
+					}
+					catch (FileNotFoundException ex)
+					{
+						System.out.println("The file does not exist, or cannot be opened. "
+								+ "Check to see if you're using the correct spelling and case, or if the file exists.");
+						ex.printStackTrace(System.out);
+					}
+
+					catch (StreamCorruptedException ex)
+					{
+						System.out.println("The filename is incorrect, or the file is corrupted.");
+						ex.printStackTrace(System.out);
+					}
+
+					catch (IOException ex)
+					{
+						System.out.println("There was an error reading from the File Input Stream.");
+						ex.printStackTrace(System.out);
+					}
+
 				}
+			}
+			if (action == loadProfileButton)
+			{
+
+				String loadProfile;
+
+				loadProfile = createTextField2.getText();
+				try {
+					if (loadProfile.isEmpty())
+					{
+						message.setText("Please fill in the load profile!");
+						message.setForeground(Color.red);
+					}
+					else if(IO.retrieve(loadProfile) != null) //
+					{
+						//loads the Player's profile and starts system for game
+						currentPlayer = IO.retrieve(loadProfile);
+						gamePlay = new GamePlay(currentPlayer);
+						message.setText("Profile loaded");
+						message.setForeground(Color.green);
+						createTextField.setText("");
+						loadProfilePanel.setVisible(false);
+					} else {
+						message.setText("Profile not found");
+						message.setForeground(Color.red);
+					}
+				}
+				catch (FileNotFoundException ex)
+				{
+					System.out.println("The file does not exist, or cannot be opened. "
+							+ "Check to see if you're using the correct spelling and case, or if the file exists.");
+					ex.printStackTrace(System.out);
+				}
+
+				catch (StreamCorruptedException ex)
+				{
+					System.out.println("The filename is incorrect, or the file is corrupted.");
+					ex.printStackTrace(System.out);
+				}
+
+				catch (IOException ex)
+				{
+					System.out.println("There was an error reading from the File Input Stream.");
+					ex.printStackTrace(System.out);
+				}
+				//Implement the "choose the player" here
 			}
 			if (action == chooseButton)
 			{
-				if(newPlayerProfile == null) //Temporary until loading profiles is implemented
-				{
-					gamePlay = new GamePlay("Unnamed");
-				}
+				message.setText("");
+				loadProfilePanel.setVisible(true);
 				message.setText("");
 				createProfilePanel.setVisible(false);
-				//Implement the "choose the player" here
 			}
 			if (action == rankButton)
 			{
 				message.setText("");
 				createProfilePanel.setVisible(false);
 				//Implement the "show the ranking" here
+
+				if(currentPlayer == null){
+					String ranking = "";
+					listOfPlayer.setText("No Player Selected");
+				} else {
+				//test code for displaying rank/stats
+				String ranking = "";
+				listOfPlayer.setText(currentPlayer.getName() + "\n" + "Player score: " + ranking + currentPlayer.getTotalScore());
+				}
+
 			}
 			if (action == battleButton)				//set Visibility to Menu panel and Battle panel
 			{
 				if(gamePlay == null)
-				{
+					{
 					listOfPlayer.setText("A profile has not been created or selected to play the game with.");
-				}
-				else
-				{
+					}
+					else
+					{
 					message.setText("");
 					createProfilePanel.setVisible(false);
 					menuOption.setVisible(false);
 					battleOption.setVisible(true);
 
-					listOfPlayer.setText("Beginning Round 1 of 3\n\n");
-				}
+					listOfPlayer.setText("Beginning Match 1 of 3\n"
+							+ "Beginning Round 1 of 3\n\n");
+					}
 			}
 			if (action == createButton)
 			{
 				message.setText("");
 				createProfilePanel.setVisible(true);
+				loadProfilePanel.setVisible(false);
 			}
+			/* Not currently needed, might use later
 			if (action == backButton)				//set Visibility to Menu panel and Battle panel
 			{
 				menuOption.setVisible(true);
 				battleOption.setVisible(false);
 				//Update info. implementation
 			}
+			*/
 			if	(action == rollButton)
 			{
 
-				String gameDetails = gamePlay.rollDice(playerNum); //Locks in player's guess and begins calculating a winner
+				try {
 
-				listOfPlayer.append(gameDetails);
+					String gameDetails = gamePlay.rollDice(playerNum); //Locks in player's guess and begins calculating a winner
 
-				backButton.setVisible(true);
-				//Implementation
+					listOfPlayer.append(gameDetails);
+
+					//backButton.setVisible(true);
+
+					//IO.write(currentPlayer, newPlayerProfile);
+
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NullPointerException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				boolean gameOver = gamePlay.getGameOver();
+
+				if(gameOver)
+				{
+					gamePlay = null;
+					menuOption.setVisible(true);
+					battleOption.setVisible(false);
+				}
 			}
 			if	(action == giveUpButton)			//set Visibility to Menu panel and Battle panel
 			{
+				gamePlay = null;
 				menuOption.setVisible(true);
 				battleOption.setVisible(false);
 				//Implementation if needed
@@ -290,6 +426,7 @@ public class Menu extends JPanel
 				playerNum = 11;
 			else if (diceChoices.getSelectedItem().equals("12"))
 				playerNum = 12;
+			else;
 		}
 	}
 }
