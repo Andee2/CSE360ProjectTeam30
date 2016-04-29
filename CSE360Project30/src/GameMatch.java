@@ -37,7 +37,7 @@ public class GameMatch
 	public boolean nextRound()
 	{
 		boolean nextRound;
-		if(rounds < maxRounds && playerWins <= maxRounds / 2)
+		if(rounds < maxRounds - 1 && playerWins <= maxRounds / 2)
 		{
 			nextRound = true;
 			rounds++;
@@ -45,7 +45,7 @@ public class GameMatch
 		else
 		{
 			nextRound = false;
-			endMatch();
+			//endMatch();
 		}
 		return nextRound;
 	}
@@ -157,6 +157,7 @@ public class GameMatch
 
 
 	/**endMatch prints or returns whether or not the player has won the match */
+	/* No longer needed
 	public void endMatch()
 	{
 		if(playerWins>1)
@@ -169,4 +170,5 @@ public class GameMatch
 		}
 
 	}
+	*/
 }
