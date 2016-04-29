@@ -394,9 +394,9 @@ public class Menu extends JPanel
 				try {
 
 					String gameDetails = gamePlay.rollDice(playerNum); //Locks in player's guess and begins calculating a winner
-
+					
 					listOfPlayer.append(gameDetails);
-
+					
 					
 					
 					
@@ -419,6 +419,7 @@ public class Menu extends JPanel
 
 				if(gameOver)
 				{
+					rankedList = gamePlay.getList();
 					gamePlay = null;
 					menuOption.setVisible(true);
 					battleOption.setVisible(false);

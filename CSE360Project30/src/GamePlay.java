@@ -14,7 +14,7 @@ public class GamePlay
 	private int matchesWon;
 	private boolean matchEnded;
 	private boolean gameOver;
-	private LinkedList<Player> rankedList;
+	private LinkedList<Player> rankedList = new LinkedList<Player>();
 	
 	public GamePlay()
 	{
@@ -95,9 +95,9 @@ public class GamePlay
 			feedback = feedback + nextMatch();
 			currentGame = new GameMatch();
 			matchEnded = false;
-			rankedList.add(activePlayer);
+			/*rankedList.add(activePlayer);
 			Collections.sort(rankedList);
-			IO.writeToManifest(rankedList);
+			IO.writeToManifest(rankedList);*/
 		}
 
 		return feedback;
@@ -142,12 +142,15 @@ public class GamePlay
 		return result;
 	}
 
-	private String nextMatch()
+	private String nextMatch() throws FileNotFoundException, NullPointerException
 	{
 		String result = "";
 		if(numOfMatches > 2)
 		{
 			gameOver = true;
+			rankedList.add(activePlayer);
+			Collections.sort(rankedList);
+			IO.writeToManifest(rankedList);
 			activePlayer.resetScore();
 
 			if(matchesWon > 1)
@@ -176,6 +179,11 @@ public class GamePlay
 	public boolean getGameOver()
 	{
 		return gameOver;
+	}
+	
+	public LinkedList<Player> getList()
+	{
+		return rankedList;
 	}
 
 }
