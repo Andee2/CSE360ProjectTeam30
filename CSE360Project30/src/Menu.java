@@ -30,11 +30,12 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StreamCorruptedException;
-
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 
+import java.util.LinkedList;
 
 public class Menu extends JPanel
 {
@@ -54,6 +55,17 @@ public class Menu extends JPanel
 	private Player currentPlayer;
 
 	private GamePlay gamePlay;
+	//private LinkedList<Player> rankedList;
+	
+	
+	//Opening Dialouge
+	String plot = String.format("A goblin army has appeared on the boarders of your kingdom and the numbers are not in your favor.\n"
+			+"Their fleet of soldiers out numbers the capabilities of your people. However you recognize their\n"
+			+"banners and recall that their supreme commander is a sucker for a good gamble. After appealing to\n"
+			+"his gambling addictions, and threatening to use scorched-earth tactics, you convince the supreme\n"
+			+"commander to take on a bet. You wager your unconditional surrender and he wagers an oath to leave your\n"
+			+"kingdom and return home. A pair of six-sided dice are brought out to the table where the negotiations\n"
+			+"were being held. Now you must gamble against the supreme commander's top three generals.");
 
 	public Menu()
 	{
@@ -99,7 +111,7 @@ public class Menu extends JPanel
 		//backButton.setVisible(false);			//This button will Not be shown until the "game" end
 
 		//Text Area for different purposes
-		listOfPlayer = new TextArea("testing");
+		listOfPlayer = new TextArea(plot);
 
 		//Create a text field for the player to fill out name and create button
 		createProfilePanel = new JPanel();
@@ -119,6 +131,43 @@ public class Menu extends JPanel
 		loadProfilePanel.setVisible(false);		//This will show when the player click the the player click recreate
 
 
+		//initializes and loads the rankedList from the manifest
+		/*
+		rankedList = new LinkedList<Player>();
+		try
+		{
+			rankedList = IO.readFromManifest();
+		}
+		catch (FileNotFoundException ex)
+		{
+			System.out.println("The file does not exist, or cannot be opened. "
+					+ "Check to see if you're using the correct spelling and case, or if the file exists.");
+			ex.printStackTrace(System.out);
+		}
+		catch (NullPointerException ex)
+		{
+			System.out.println("The filename is incorrect, or the file is corrupted.");
+			ex.printStackTrace(System.out);
+		}
+		catch (IOException ex)
+		{
+			System.out.println("There was an error reading from the File Input Stream.");
+			ex.printStackTrace(System.out);
+		}
+		*/
+		
+		//PlayerStats Load in list
+		
+		try 
+		{
+			PlayerList.loadList();
+		}
+		catch (FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			System.out.println("PlayerStats.txt was not found or could not be opened.\n");
+			e.printStackTrace();
+		}
 
 /*===================================[BUTTON LISTENER]=================================*/
 		//Menus Buttons
@@ -212,6 +261,7 @@ public class Menu extends JPanel
 				{
 					try {
 						Player newPlayer = new Player(newPlayerProfile);
+						PlayerList.add(newPlayer.getName(), 0);
 							if(IO.retrieve(newPlayerProfile) != null){
 								message.setText("Check if profile already exists!");
 								message.setForeground(Color.red);
@@ -311,15 +361,28 @@ public class Menu extends JPanel
 				message.setText("");
 				createProfilePanel.setVisible(false);
 				//Implement the "show the ranking" here
+				listOfPlayer.setText(PlayerList.listAsString());
 
-				if(currentPlayer == null){
-					String ranking = "";
-					listOfPlayer.setText("No Player Selected");
-				} else {
-				//test code for displaying rank/stats
-				String ranking = "";
-				listOfPlayer.setText(currentPlayer.getName() + "\n" + "Player score: " + ranking + currentPlayer.getTotalScore());
-				}
+//				if(currentPlayer == null)
+//				{
+//					String ranking = "";
+//					listOfPlayer.setText("No Player Selected");
+//				}
+//				else
+//				{
+//					//test code for displaying rank/stats
+//					LinkedList<Player> tempList = rankedList;
+//					String ranking = "";
+//					Player current = tempList.pop();
+//					while(current != null)
+//					{
+//						ranking = ranking + current;
+//						current = tempList.pop();
+//					}
+//
+//					//listOfPlayer.setText(currentPlayer.getName() + "\n" + "Player score: " + ranking + currentPlayer.getTotalScore());
+//					listOfPlayer.setText(ranking);
+//				}
 
 			}
 			if (action == battleButton)				//set Visibility to Menu panel and Battle panel
@@ -362,6 +425,9 @@ public class Menu extends JPanel
 
 					listOfPlayer.append(gameDetails);
 
+
+
+
 					//backButton.setVisible(true);
 
 					//IO.write(currentPlayer, newPlayerProfile);
@@ -381,6 +447,16 @@ public class Menu extends JPanel
 
 				if(gameOver)
 				{
+					try
+					{
+						PlayerList.saveList();
+					}
+					catch (FileNotFoundException ex)
+					{
+						System.out.println("PlayerStats.txt was not found or could not be opened.\n");
+						ex.printStackTrace(System.out);
+					}
+					//rankedList = gamePlay.getList();
 					gamePlay = null;
 					menuOption.setVisible(true);
 					battleOption.setVisible(false);
@@ -388,6 +464,15 @@ public class Menu extends JPanel
 			}
 			if	(action == giveUpButton)			//set Visibility to Menu panel and Battle panel
 			{
+				try
+				{
+					PlayerList.saveList();
+				}
+				catch (FileNotFoundException ex)
+				{
+					System.out.println("PlayerStats.txt was not found or could not be opened.\n");
+					ex.printStackTrace(System.out);
+				}
 				gamePlay = null;
 				menuOption.setVisible(true);
 				battleOption.setVisible(false);

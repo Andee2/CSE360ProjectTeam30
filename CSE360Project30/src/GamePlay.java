@@ -1,5 +1,7 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.LinkedList;
 
 public class GamePlay
 {
@@ -12,6 +14,7 @@ public class GamePlay
 	private int matchesWon;
 	private boolean matchEnded;
 	private boolean gameOver;
+	//private LinkedList<Player> rankedList = new LinkedList<Player>();
 
 	public GamePlay()
 	{
@@ -37,6 +40,7 @@ public class GamePlay
 		numOfMatches = 0;
 		matchesWon = 0;
 		gameOver = false;
+		//rankedList = list;
 	}
 
 	/**
@@ -73,9 +77,6 @@ public class GamePlay
 		if(playerWin)
 		{
 			feedback = feedback + "You have won this round!\n";
-			//probably need to edit if gamematch score is incremental and not singular
-			//gameplay is not working properly as well so need to edit later when it is fixed - mkchun
-
 		}
 		else
 		{
@@ -88,12 +89,14 @@ public class GamePlay
 		if(matchEnded)
 		{
 			activePlayer.incrementScore(currentGame.getFinalPlayerScore());
-			IO.write(activePlayer, activePlayer.getName());
-
+			PlayerList.updateScore(activePlayer.getName(), activePlayer.getTotalScore());
 			feedback = feedback + nextMatch();
-
 			currentGame = new GameMatch();
 			matchEnded = false;
+
+			/*rankedList.add(activePlayer);
+			Collections.sort(rankedList);
+			IO.writeToManifest(rankedList);*/
 		}
 
 		return feedback;
@@ -125,7 +128,7 @@ public class GamePlay
 				result = "\nYou have lost this match!\n";
 				activePlayer.incrementLossCount(1);
 			}
-
+			IO.write(activePlayer, activePlayer.getName());
 
 			numOfMatches++;
 			matchEnded = true;
@@ -138,12 +141,15 @@ public class GamePlay
 		return result;
 	}
 
-	private String nextMatch()
+	private String nextMatch() throws FileNotFoundException, NullPointerException
 	{
 		String result = "";
 		if(numOfMatches > 2)
 		{
 			gameOver = true;
+//			rankedList.add(activePlayer);
+//			Collections.sort(rankedList);
+//			IO.writeToManifest(rankedList);
 			activePlayer.resetScore();
 
 			if(matchesWon > 1)
@@ -173,5 +179,12 @@ public class GamePlay
 	{
 		return gameOver;
 	}
-
+	
+/*
+	public LinkedList<Player> getList()
+	{
+		return rankedList;
+	}
+*/
+	
 }
