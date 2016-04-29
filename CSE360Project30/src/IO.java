@@ -47,7 +47,7 @@ public class IO
 		catch (IOException ex)
 		{
 			error = 2;
-			System.out.println("There was an error writing to the File Output Stream.\n");
+			System.out.println("There was an error writing to the FileOutputStream.\n");
 			ex.printStackTrace(System.out);
 		}
 		
@@ -107,7 +107,7 @@ public class IO
 		
 		catch (IOException ex)
 		{
-			System.out.println("There was an error reading from the File Input Stream.\n");
+			System.out.println("There was an error reading from the FileInputStream.\n");
 			ex.printStackTrace(System.out);
 		}
 		
@@ -127,30 +127,51 @@ public class IO
 	}
 	
 	/**
-	 * This allows to open the manifest file to read from it.
+	 * This allows to open the manifest file to read from it. Just call the
+	 * method, and it returns the already sorted LinkedList from the manifest.
 	 * 
 	 * @return The LinkedList of that was stored from the manifest
 	 * @throws FileNotFoundException
 	 * @throws NullPointerException
+	 * @throws IOException 
 	 */
-	public static LinkedList<Player> readFromManifest () 
-			throws FileNotFoundException, NullPointerException
+	public static LinkedList<Player> readFromManifest() 
+			throws FileNotFoundException, NullPointerException, IOException
 	{
 		BufferedReader reader = null;
 		LinkedList<Player> list = null;
 		
+		File file = new File ("manifest.list");
+		if (!file.exists())
+			return list;
+		
 		try
 		{
-			String currentLine = null;
 			reader = new BufferedReader (new FileReader ("manifest.list"));
+			String currentLine = reader.readLine();
 			
-			currentLine = reader.readLine();
+			while (!currentLine.equals("null"))
+			{
+				System.out.println(currentLine);
+				
+				if (list == null)
+				{
+					list = new LinkedList<Player>();
+					list.add (retrieve(currentLine));
+				}
+				else
+					list.add (retrieve(currentLine));
+				
+				currentLine = reader.readLine();
+			}
+			
 		}
 		
 		catch (FileNotFoundException ex)
 		{
-			System.out.println("The manifest cannot be read. Likely, you do not have permission to read it.\n");
+			System.out.println("The manifest cannot be read. The file may not exist.\n");
 			ex.printStackTrace(System.out);
+			return null;
 		}
 		
 		catch (NullPointerException ex)
@@ -165,23 +186,43 @@ public class IO
 			ex.printStackTrace(System.out);
 		}
 		
+		finally
+		{
+			try
+			{
+				reader.close();
+			} 
+			
+			catch (IOException ex)
+			{
+				System.out.println("IO Exception.\n");
+				ex.printStackTrace(System.out);
+			}
+		}
+		
 		return list;
 	}
 	
 	/**
-	 * This Writes to the manifest the score of the player.
+	 * This Writes to the manifest the score of the player. Just provide
+	 * the LinkedList, and it will write the manifest based on that.
 	 * 
-	 * @param head - The head of the linked list of players.
-	 * @return Error number.
+	 * @param list - The LinkedList of players.
 	 * @throws FileNotFoundException
 	 * @throws NullPointerException
 	 */
 	public static int writeToManifest (LinkedList<Player> list) 
 			throws FileNotFoundException, NullPointerException
 	{
-		int error;
 		PrintWriter writer = null;
-		Player players[] = (Player[]) list.toArray();
+		
+		Object _players[] = list.toArray();
+		Player players[] = new Player[_players.length];
+		
+		for (int pos = 0; pos < _players.length; pos++)
+			players[pos] = (Player) _players[pos];
+		
+		int error = -1;
 		
 		try
 		{	
@@ -190,30 +231,36 @@ public class IO
 			int rank = 0;
 			
 			while (rank < players.length)
-				writer.println(players[rank].getName());
+			{
+				writer.print(players[rank].getName());
+				writer.print('\n');
+				rank++;
+			}
+			
+			writer.println("null");
 			
 			error = 0;
 		}
 		
 		catch (FileNotFoundException ex)
 		{
-			error = 1;
 			System.out.println("An error occured saving to the file.\n");
 			ex.printStackTrace(System.out);
+			error = 1;
 		}
 		
 		catch (NullPointerException ex)
 		{
-			error = 2;
 			System.out.println("The FileOutputStream is null.\n");
 			ex.printStackTrace(System.out);
+			error = 2;
 		}
 		
 		catch (Exception ex)
 		{
-			error = 3;
 			System.out.println("There was an error.\n");
 			ex.printStackTrace(System.out);
+			error = 3;
 		}
 		
 		finally
