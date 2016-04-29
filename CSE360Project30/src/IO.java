@@ -127,24 +127,38 @@ public class IO
 	}
 	
 	/**
-	 * This allows to open the manifest file to read from it.
+	 * This allows to open the manifest file to read from it. Just call the
+	 * method, and it returns the already sorted LinkedList from the manifest.
 	 * 
 	 * @return The LinkedList of that was stored from the manifest
 	 * @throws FileNotFoundException
 	 * @throws NullPointerException
+	 * @throws IOException 
 	 */
 	public static LinkedList<Player> readFromManifest () 
-			throws FileNotFoundException, NullPointerException
+			throws FileNotFoundException, NullPointerException, IOException
 	{
 		BufferedReader reader = null;
 		LinkedList<Player> list = null;
 		
 		try
 		{
-			String currentLine = null;
+			String currentLine = "";
 			reader = new BufferedReader (new FileReader ("manifest.list"));
 			
-			currentLine = reader.readLine();
+			while (currentLine != null)
+			{
+				currentLine = reader.readLine();
+				
+				if (list == null)
+				{
+					list = new LinkedList<Player>();
+					list.add(retrieve(currentLine));
+				}
+				else
+					list.add (retrieve(currentLine));
+			}
+			
 		}
 		
 		catch (FileNotFoundException ex)
@@ -165,21 +179,34 @@ public class IO
 			ex.printStackTrace(System.out);
 		}
 		
+		finally
+		{
+			try
+			{
+				reader.close();
+			} 
+			
+			catch (IOException ex)
+			{
+				System.out.println("IO Exception.\n");
+				ex.printStackTrace(System.out);
+			}
+		}
+		
 		return list;
 	}
 	
 	/**
-	 * This Writes to the manifest the score of the player.
+	 * This Writes to the manifest the score of the player. Just provide
+	 * the LinkedList, and it will write the manifest based on that.
 	 * 
-	 * @param head - The head of the linked list of players.
-	 * @return Error number.
+	 * @param list - The LinkedList of players.
 	 * @throws FileNotFoundException
 	 * @throws NullPointerException
 	 */
-	public static int writeToManifest (LinkedList<Player> list) 
+	public static void writeToManifest (LinkedList<Player> list) 
 			throws FileNotFoundException, NullPointerException
 	{
-		int error;
 		PrintWriter writer = null;
 		Player players[] = (Player[]) list.toArray();
 		
@@ -191,27 +218,22 @@ public class IO
 			
 			while (rank < players.length)
 				writer.println(players[rank].getName());
-			
-			error = 0;
 		}
 		
 		catch (FileNotFoundException ex)
 		{
-			error = 1;
 			System.out.println("An error occured saving to the file.\n");
 			ex.printStackTrace(System.out);
 		}
 		
 		catch (NullPointerException ex)
 		{
-			error = 2;
 			System.out.println("The FileOutputStream is null.\n");
 			ex.printStackTrace(System.out);
 		}
 		
 		catch (Exception ex)
 		{
-			error = 3;
 			System.out.println("There was an error.\n");
 			ex.printStackTrace(System.out);
 		}
@@ -220,7 +242,5 @@ public class IO
 		{
 			writer.close();
 		}
-		
-		return error;
 	}
 }
