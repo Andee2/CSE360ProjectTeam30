@@ -88,7 +88,10 @@ public class GamePlay
 		if(matchEnded)
 		{
 			activePlayer.incrementScore(currentGame.getFinalPlayerScore());
+			IO.write(activePlayer, activePlayer.getName());
+
 			feedback = feedback + nextMatch();
+
 			currentGame = new GameMatch();
 			matchEnded = false;
 		}
@@ -122,7 +125,7 @@ public class GamePlay
 				result = "\nYou have lost this match!\n";
 				activePlayer.incrementLossCount(1);
 			}
-			IO.write(activePlayer, activePlayer.getName());
+
 
 			numOfMatches++;
 			matchEnded = true;
