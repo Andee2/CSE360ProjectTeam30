@@ -11,8 +11,43 @@ public class PlayerList {
 
 	public static void add(String name, int score)
 	{
-		playerStats.add(name);
-		playerStats.add(score);
+		//if playerStats is empty immediately just add to list
+		if(playerStats.size() == 0)
+		{
+			playerStats.add(name);
+			playerStats.add(score);
+		}
+		else
+		{
+			int count = 1;
+			boolean done = false;
+			//loops through until it finds an element that is less than score
+			while(!done && count<=playerStats.size()) 
+			//for(int count = 1; count <= playerStats.size(); count++)
+			{
+	
+				if(count % 2 != 0)
+				{
+					//result = result + String.format("%d.", numbering);
+					//result = result + String.format("%s\t\t", playerStats.get(count - 1));
+					//numbering++;
+					if((int)playerStats.get(count-1) < score)
+					{
+						playerStats.add(count-1, name);
+						playerStats.add(count, score);
+						done = true;
+					}
+				}
+				
+				count++;
+			}
+			//if it didn't find a score lass than the given 'score' it is the lowest and added to end of list
+			if(!done)
+			{
+				playerStats.add(name);
+				playerStats.add(score);
+			}
+		}
 	}
 
 	public static String listAsString()
